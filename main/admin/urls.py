@@ -100,4 +100,11 @@ urlpatterns = [
     path('category-blog/edit/<int:pk>/', views.category_blog_edit, name='category_blog_edit'),
     path('category-blog/delete/<int:pk>/', views.category_blog_remove, name='category_blog_remove'),
 
+
+    #URl - Новости
+    path('news-settings/', views.news_settings, name='news_settings'),
+    path('news/add/', views.news_add, name='news_add'),
+    path('news/edit/<int:pk>/', views.news_edit, name='news_edit'),
+    path('news/delete/<int:pk>/', views.news_delete, name='news_delete'),
+
 ]

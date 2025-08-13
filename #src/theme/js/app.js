@@ -10,6 +10,8 @@ import '../js/modules/searchCatalog.js';
 import '../js/modules/menu/mobileMenu.js';
 import '../js/modules/mask.js';
 import '../js/modules/sendForm.js';
+import '../js/modules/cookie.js';
+import '../js/modules/tabs.js';
 
 import Swiper from 'swiper';
 import {Navigation, Pagination, FreeMode, EffectFade, Autoplay} from 'swiper/modules';

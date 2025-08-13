@@ -1,26 +1,33 @@
-{% load static %}
-<div class="slider-full swiper">
-  <div class="slider-full__wrapper swiper-wrapper">
-    <div class="slider-full__slide swiper-slide" style="background-image: url({% static 'theme/img/main-bg.jpeg' %})">
-      <div class="container">
-        <div class="slider-full__slide-inner">
-          <p class="slider-full__title">Хотите заказать качественные входные и межкомнатные двери ?</p>
-          <p class="slider-full__text">Тогда наше предложение вас точно заинтересует.</p>
-          <a href="{% url 'category' %}" class="slider-full__link btn">Перейти в каталог</a>
-        </div>
-      </div>
-    </div>
-    <div class="slider-full__slide swiper-slide" style="background-image: url({% static 'theme/img/plastik.jpg' %})">
-      <div class="container">
-        <div class="slider-full__slide-inner">
-          <p class="slider-full__title">
-            Производство и установка пластиковых окон, лоджий и балконов. Звоните !
-          </p>
-          <p class="slider-full__text">И наше предложение Вас точно заинтересует</p>
-          <a href="{% url 'production' %}" class="slider-full__link btn">Подробнее</a>
-        </div>
+{% load static %}{% load thumbnail %}
+
+<div class="index-banner">
+  {% if home_page.banner %}
+    {% thumbnail home_page.banner "1920x830" format="WEBP" crop="center" as im %}
+      <img src="{{ im.url }}"
+           alt="{{ home_page.untitle }} - {{ home_page.title }}"
+           title="{{ home_page.untitle }} - {{ home_page.title }}"
+           class="index-banner__image"
+      >
+    {% endthumbnail %}
+  {% endif %}
+  <div class="container">
+    <div class="index-banner__content">
+      <p class="index-banner__undertitle">
+        {% if home_page.untitle %}
+          {{ home_page.untitle }}
+        {% endif %}
+      </p>
+      <h1 class="index-banner__title">
+        {% if home_page.meta_h1 %}
+          {{ home_page.meta_h1 }}
+        {% else %}
+          {{ home_page.title }}
+        {% endif %}
+      </h1>
+      <div class="index-banner__btns">
+        <a href="#index-catalog" class="index-banner__btn _btn">Меню дня</a>
+        <!-- <a href="#" class="index-banner__btn btn">Связаться</a> -->
       </div>
     </div>
   </div>
-  <div class="slider-full__pagination swiper-pagination"></div>
 </div>

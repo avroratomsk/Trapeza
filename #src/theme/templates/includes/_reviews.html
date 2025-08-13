@@ -1,30 +1,50 @@
 {% load static %}
 {% if reviews %}
-  <section class="index-reviews section--padded">
-    <div class="index-reviews__inner">
-      <h2 class="index-reviews__title title-h2">Люди выбирают нас</h2>
-      <div class="index-reviews__slider swiper">
-        <div class="index-reviews__wrapper swiper-wrapper">
+<div class="reviews">
+  <div class="container">
+    <div class="reviews__inner">
+      <div class="reviews__block-top">
+        <h2 class="reviews__title _title">Отзывы клиентов</h2>
+        <p class="reviews__subtitle">Мы накормили уже
+          много людей. Так как мы
+          делаем это с любовью и профессионально,
+          все клиенты довольные и сытые.</p>
+      </div>
+      <div class="reviews__slider swiper">
+        <div class="reviews__wrapper swiper-wrapper">
           {% for review in reviews %}
-          <div class="index-reviews__slide swiper-slide">
-            <div class="index-reviews__item reviews">
-              <div class="reviews__top">
-                <div class="reviews__info">
-                  <img src="{{ review.avatar.url }}" class="reviews__avatar">
-                  <p class="reviews__name">{{ review.name }}</p>
-                </div>
-                <div class="reviews__logo">
-                  <img src="{% static 'theme/img/icon/2gis.svg' %}" alt="">
-                </div>
+          <div class="reviews__slide swiper-slide">
+            <div class="reviews__quote">"</div>
+            <div class="reviews__top">
+              <div class="reviews__avatar">
+                {% if review.avatar %}
+                <img src="{{ review.avatar.url }}" alt="{{ review.name }}" title="{{ review.name }}"/>
+                {% endif %}
               </div>
-              <p>
-                {{ review.text }}
-              </p>
+              <div class="reviews__name">
+                <p>{{ review.name }}</p>
+                <span>{{ review.date }}</span>
+              </div>
+            </div>
+            <div class="reviews__bottom">
+              <div class="reviews__text">
+                <p>{{ review.text }}</p>
+              </div>
+              <button type="button" class="reviews__btn" data-popup="popup-reviews">Показать весь отзыв</button>
             </div>
           </div>
           {% endfor %}
         </div>
+        <div class="reviews__controls">
+          <!-- <button type="button" class="reviews__controls-btn">Оставить отзыв</button> -->
+          <div class="reviews__controls-inherit">
+            <div class="swiper-button-prev reviews__controls-prev"></div>
+            <div class="swiper-pagination reviews__controls-pagination"></div>
+            <div class="swiper-button-next reviews__controls-next"></div>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</div>
 {% endif %}

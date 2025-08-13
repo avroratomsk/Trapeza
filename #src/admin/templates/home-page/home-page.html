@@ -5,27 +5,27 @@
       <h1 class="page__title">Главная страница</h1>
       <ul class="admin-breadcrumbs">
         <li><a href="{% url 'admin' %}">Панель управления</a></li>
-        <li><a href="{% url 'admin_settings' %}">Шаблон главной страницы</a></li>
+        <li><a href="{% url 'admin_home_page' %}">Главная страница</a></li>
       </ul>
     </div>
     <form action="." method="POST" class="form" enctype="multipart/form-data">
       <div class="page__head">
         <div class="page__head-tab">
-          <button type="button" data-name="basic" class="page__head-btn _active">Основные</button>
-        </div>
-        <div class="page__head-tab">
-          <button type="button" data-name="seo" class="page__head-btn">Seo</button>
+          <button type="button" data-tab="basic" class="page__head-btn _active">Настройки SEO</button>
+          <button type="button" data-tab="banner" class="page__head-btn">Баннер</button>
+          <button type="button" data-tab="why" class="page__head-btn">Почему мы</button>
+          <button type="button" data-tab="callback-index" class="page__head-btn">Обратная связь</button>
         </div>
         <button type="submit" class="form__btn">
-          <img src="{% static 'theme/mb/images/admin/save.svg' %}" alt="" />
+          <img src="{% static 'admin/img/save.svg' %}" alt="" />
           Сохранить
         </button>
       </div>
       {% csrf_token %}
+      {{ form.media }}
       <div class="page-content _show" id="basic">
         <div class="page-content__row">
-          <div class="page-content__col">
-            {% comment %}{% include '../includes/form-group.html' with field=form.meta_h1 label='Заголовок h1' %}{% endcomment %}
+          <div class="page-content__onecol">
             <div class="form__group">
               <label for="{{ form.meta_h1.id_for_label }}" class="form__controls-label"> Заголовок h1 : </label>
               {{ form.meta_h1 }} {{ form.meta_h1.errors }}
@@ -55,10 +55,72 @@
               {{ form.sale_text }} {{ form.sale_text.errors }}
             </div>
           </div>
+        </div>
+      </div>
+      <div class="page-content" id="banner">
+        <div class="page-content__row">
+          <div class="page-content__col">
+            <div class="form__group">
+              <label for="{{ form.title.id_for_label }}" class="form__controls-label"> Заголовок: </label>
+              {{ form.title }} {{ form.title.errors }}
+            </div>
+            <div class="form__group">
+              <label for="{{ form.untitle.id_for_label }}" class="form__controls-label">
+                Текст над заголовком :
+                <div class="meta-lenght">0</div>
+              </label>
+              {{ form.untitle }} {{ form.untitle.errors }}
+            </div>
+          </div>
           <div class="page-content__col">
             <div class="form__group form__group-image">
               <label for="{{ form.banner.id_for_label }}" class="form__controls-label">Фоновая картинка:</label>
               {{ form.banner }} {{ form.banner.errors }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page-content" id="why">
+        <div class="page-content__row">
+          <div class="page-content__onecol">
+            <div class="form__group">
+              <label for="{{ form.title_why.id_for_label }}" class="form__controls-label">Заголовок: </label>
+              {{ form.title_why }} {{ form.title_why.errors }}
+            </div>
+            <div class="form__group">
+              <label for="{{ form.left_text.id_for_label }}" class="form__controls-label">
+                Левый текст:
+              </label>
+              {{ form.left_text }} {{ form.left_text.errors }}
+            </div>
+            <div class="form__group">
+              <label for="{{ form.right_text.id_for_label }}" class="form__controls-label">
+                Правый текст:
+                <div class="meta-lenght">0</div>
+              </label>
+              {{ form.right_text }} {{ form.right_text.errors }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page-content" id="callback-index">
+        <div class="page-content__row">
+          <div class="page-content__col">
+            <div class="form__group">
+              <label for="{{ form.callback_title.id_for_label }}" class="form__controls-label">Заголовок: </label>
+              {{ form.callback_title }} {{ form.callback_title.errors }}
+            </div>
+            <div class="form__group">
+              <label for="{{ form.meta_description.id_for_label }}" class="form__controls-label">
+                Текст под заголовком:
+              </label>
+              {{ form.callback_text }} {{ form.callback_text.errors }}
+            </div>
+          </div>
+          <div class="page-content__col">
+            <div class="form__group form__group-image">
+              <label for="{{ form.banner.id_for_label }}" class="form__controls-label">Фоновая картинка:</label>
+              {{ form.callback_image }} {{ form.callback_image.errors }}
             </div>
           </div>
         </div>

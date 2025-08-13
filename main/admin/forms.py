@@ -1,8 +1,9 @@
 from django import forms
-from home.models import BaseSettings, Works, Production, Gallery, GalleryCategory, HomeTemplate, RobotsTxt, Stock, About, Delivery,SalesOffices, ContactTemplate
+from home.models import *
 from blog.models import BlogSettings, Post, BlogCategory
 from subdomain.models import Subdomain, SubdomainContact
 from service.models import Service, ServicePage
+from news.models import *
 from shop.models import Category, ColorProduct, Product, ProductImage, ShopSettings,Properties
 from .widgets import CustomImageWidget
 from django_ckeditor_5.widgets import CKEditor5Widget
@@ -375,9 +376,6 @@ class HomeTemplateForm(forms.ModelForm):
       model = HomeTemplate
       fields = "__all__"
       widgets = {
-          'name': forms.TextInput(attrs={
-              'class': INPUT_CLASS
-          }),
           'meta_h1': forms.TextInput(attrs={
               'class': INPUT_CLASS,
           }),
@@ -389,6 +387,29 @@ class HomeTemplateForm(forms.ModelForm):
               'rows': 5
           }),
           'meta_keywords': forms.TextInput(attrs={
+              'class': INPUT_CLASS,
+          }),
+          'untitle': forms.TextInput(attrs={
+              'class': INPUT_CLASS,
+          }),
+          'title': forms.TextInput(attrs={
+              'class': INPUT_CLASS,
+          }),
+          'title_why': forms.TextInput(attrs={
+              'class': INPUT_CLASS,
+          }),
+          'left_text':CKEditor5Widget(
+              attrs={'class': 'django_ckeditor_5'},
+              config_name='extends'
+          ),
+          'right_text':CKEditor5Widget(
+              attrs={'class': 'django_ckeditor_5'},
+              config_name='extends'
+          ),
+          'callback_title': forms.TextInput(attrs={
+              'class': INPUT_CLASS,
+          }),
+          'callback_text': forms.TextInput(attrs={
               'class': INPUT_CLASS,
           }),
       }
@@ -743,6 +764,69 @@ class OfficeForm(forms.ModelForm):
         'time_work': forms.TextInput(attrs={
           'class': INPUT_CLASS,
         }),
+    }
+
+""" Новости """
+class NewsPage(forms.ModelForm):
+  class Meta:
+    model = NewsSettings
+    fields = "__all__"
+
+    widgets = {
+        'text':CKEditor5Widget(
+            attrs={'class': 'django_ckeditor_5'},
+            config_name='extends'
+        ),
+        'meta_h1': forms.TextInput(attrs={
+            'class': INPUT_CLASS,
+        }),
+        'meta_title': forms.TextInput(attrs={
+            'class': INPUT_CLASS,
+        }),
+        'meta_description': forms.Textarea(attrs={
+            'class': INPUT_CLASS,
+        }),
+        'meta_keywords': forms.TextInput(attrs={
+            'class': INPUT_CLASS,
+        })
+    }
+
+class NewsForm(forms.ModelForm):
+  """ Form, отвечает за создание товара и редактирование товара"""
+  # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
+
+  class Meta:
+    model = News
+    fields = "__all__"
+    widgets = {
+        'name': forms.TextInput(attrs={
+            'class': 'form__controls',
+            "id":"name"
+        }),
+        'text':CKEditor5Widget(
+            attrs={'class': 'django_ckeditor_5'},
+            config_name='extends'
+        ),
+        'meta_h1': forms.TextInput(attrs={
+            'class': INPUT_CLASS,
+        }),
+        'meta_title': forms.TextInput(attrs={
+            'class': INPUT_CLASS,
+        }),
+        'meta_description': forms.Textarea(attrs={
+            'class': INPUT_CLASS,
+        }),
+        'meta_keywords': forms.TextInput(attrs={
+            'class': INPUT_CLASS,
+        }),
+        'slug': forms.TextInput(attrs={
+            'class': INPUT_CLASS,
+            "id": "slug"
+        }),
+        'image': forms.FileInput(attrs={
+            'class': 'submit-file',
+            'accept': 'image/*'
+        })
     }
     
     

@@ -18,6 +18,7 @@ urlpatterns = [
     path('category/', include('shop.urls')),
     path('blog/', include('blog.urls')),
     path('service/', include('service.urls')),
+    path('novosti/', include('news.urls')),
     path('user/', include('users.urls')),
     path('reviews/', include('reviews.urls')),
     path('cart/', include('cart.urls')),

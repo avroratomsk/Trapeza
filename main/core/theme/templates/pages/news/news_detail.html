@@ -1,0 +1,62 @@
+{% extends 'base.html' %} {% load static %}
+{% block title %}{{ new.meta_title }}{% endblock %}
+{% block description %}{{ new.description }}{% endblock %}
+{% block keywords %}{{ new.keywords }}{% endblock %}
+{% load shop_tags %} {% load thumbnail %} {% block content %}
+
+<main class="page">
+  <div class="single-banner" data-speed="70">
+    {% if new.image %}
+    {% thumbnail new.image "1920x830" format="WEBP" crop="center" as im %}
+    <img src="{{ im.url }}"
+         alt="{{ new.title }}"
+         title="{{ new.title }}"
+         class="single-banner__image _bgImage"
+    >
+    {% endthumbnail %}
+    {% endif %}
+    <div class="container">
+      <div class="single-banner__inner">
+        <h1 class="stock__title _title">{{ new.name }}</h1>
+        <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+          <a href="/" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+             class="breadcrumbs__item">
+            Главная
+            <meta itemprop="position" content="1"/>
+          </a>
+          <a href="{% url 'news' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+             class="breadcrumbs__item">
+            Новости
+            <meta itemprop="position" content="2"/>
+          </a>
+          <span itemprop="name" class="breadcrumbs__item">
+        {{ new.name }}
+        <meta itemprop="position" content="3"/>
+      </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <section class="about">
+    <div class="container">
+      <div class="about__inner">
+        {% if news %}
+        <div class="link-bar">
+          {% for new in news %}
+          <a href="{{ new.get_absolute_url }}" class="link-bar__link">{{ new.name }}</a>
+          {% endfor %}
+        </div>
+        {% endif %}
+        <div class="about__content">
+          <div class="text">
+            {{ new.text|safe }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  {% include "../../includes/_contact.html" %}
+</main>
+{% endblock %}

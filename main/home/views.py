@@ -1,15 +1,17 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.core.paginator import Paginator
-from home.models import BaseSettings, Production, Works, About, Gallery, GalleryCategory, HomeTemplate, RobotsTxt, Stock, Delivery, ContactTemplate
+from home.models import *
 from cart.models import Cart
-from home.forms import CallbackForm,OknaForm, ContactForm, OrderForm, ReviewsPopupForm
+from news.models import *
+from home.forms import CallbackForm, OknaForm, ContactForm, OrderForm, ReviewsPopupForm
 from home.callback_send import email_callback
 from blog.models import Post
 from shop.models import Category, Product
 from reviews.models import Reviews
 from django.http import JsonResponse
 from django.db.models import Q
+import datetime
 
 def callback(request):
   if request.method == "POST":
@@ -86,25 +88,47 @@ def okna_form(request):
 
 
 def index(request):
-  try: 
-    home_page = HomeTemplate.objects.get()
-  except:
-    home_page = HomeTemplate.objects.all()
+  page = request.GET.get('page', 1)
+  home_page = HomeTemplate.objects.first()
+  settings = BaseSettings.objects.first()
 
-  products = Product.objects.filter(status=True)[:4]
-  posts = Post.objects.filter(status=True)
-  text_sale = home_page.sale_text
+  print(home_page.meta_h1)
+  stock = Stock.objects.filter(status=True)
+  articles = Post.objects.filter(status=True).order_by('-date_creation')[:4]
+  news = News.objects.filter(status=True)[:4]
+  reviews = Reviews.objects.filter(status=True)
+
+  # Получаем из GET параметра page для пагинации
+  category = Category.objects.all().exclude(slug="bez-kategorii")
+#   service = Service.objects.filter(status=True)
+
+  # Получаем текущую дату
+  current_date = datetime.datetime.now()
+
+  # Получаем номер дня недели (0 для понедельника, 1 для вторника и т.д.)
+  day_of_week = current_date.weekday()
+
+  try:
+      products = Product.objects.filter(day=day_of_week)
+  except:
+      pass
+
+#   paginator = Paginator(products, 8)
+#   current_page = paginator.page(int(page))
+#   current_slug = request.GET.get("slug")
 
   context = {
-    "home_page": home_page,
-    "products": products,
-    "posts": posts,
+      "categorys": category,
+#       "current_slug": current_slug,
+      "home_page": home_page,
+#       "products": current_page,
+      "settings": settings,
+      "reviews": reviews,
+#       "services": service,
+      "stocks": stock,
+      "articles": articles,
+      "news": news,
   }
-
-  if text_sale:
-    context["page_name"] = "home"
-    context["text_sale"] = text_sale
-
   return render(request, 'pages/index.html', context)
 
 def about(request):
@@ -141,15 +165,9 @@ def production(request):
   except:
     settings = Production()
 
-  text_sale = settings.sale_text
-
   context = {
     "settings": settings,
   }
-
-  if text_sale:
-    context["page_name"] = "okna"
-    context["text_sale"] = text_sale
 
   return render(request, "pages/production.html", context)
 
@@ -194,3 +212,50 @@ def robots_txt(request):
     content = "User-agent: *\nDisallow: /admin/"
 
   return HttpResponse(content, content_type="text/plain")
+
+
+def stock(request):
+    stocks = Stock.objects.filter(status=True)
+
+    try:
+      stock = StockSettings.objects.get()
+    except:
+      stock = StockSettings()
+
+    context = {
+        "stocks": stocks,
+        "stock": stock
+    }
+
+    return render(request, "pages/stock/stock.html", context)
+
+def stock_detail(request, slug):
+    stock = Stock.objects.get(slug=slug)
+
+    context = {
+        "stock": stock
+    }
+
+    return render(request, "pages/stock/stock_detail.html", context)
+
+def vacancies(request):
+  vacancy = Vacancy.objects.filter(status=True)
+
+  context = {
+    "vacancy": vacancy
+  }
+  return render(request, "pages/vacancies/vacancies.html", context)
+
+def gallery(request):
+    gallery = Gallery.objects.all()
+    try:
+        gallery_settings = GallerySettings.objects.get()
+    except:
+        gallery_settings = GallerySettings()
+
+    context = {
+        "gallery_settings": gallery_settings,
+        "gallerys": gallery
+    }
+
+    return render(request, "pages/gallery.html", context)

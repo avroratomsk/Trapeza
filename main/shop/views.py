@@ -35,9 +35,6 @@ def category_detail(request, slug):
   paginator = Paginator(products, count)
   current_page = paginator.page(int(page))
 
-
-  text_sale = category.sale_text
-
   for product in products:
       if product.image:
         product.image_url = urllib.parse.quote(product.image.url, safe="/:")
@@ -48,10 +45,6 @@ def category_detail(request, slug):
     "products": current_page,
     "count": count
   }
-
-  if text_sale:
-      context["page_name"] = category.slug
-      context["text_sale"] = text_sale
 
   return render(request, "pages/catalog/category-details.html", context)
 

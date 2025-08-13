@@ -1,42 +1,90 @@
-{% load static %}{% load carts_tag %}{% user_carts request as carts %}
-<header class="header {% if request.path != '/' %}header--white{% endif %}" id="header">
-  <div class="container">
-    <div class="header__inner">
-      <div class="header__left">
-        <a href="/" class="header__logo logo"> </a>
-        <p class="header__city">г.Самара</p>
-        {% if site_settings.phone %}
-          <a href="tel:{{ site_settings.phone }}" class="header__phone phone">
-            {{ site_settings.phone }}
-          </a>
-        {% endif %}
-      </div>
-      <nav class="header__right nav" id="nav">
-        <ul class="nav__list">
-          <li class="nav__item">
-            <a href="{% url 'category' %}" class="nav__link">Каталог</a>
-            <!--            <ul class="submenu">-->
-            <!--              <li class="submenu__item"><a href="#">Межкомнатные двери</a></li>-->
-            <!--              <li class="submenu__item"><a href="#">Окна</a></li>-->
-            <!--              <li class="submenu__item"><a href="#">Балконы</a></li>-->
-            <!--              <li class="submenu__item"><a href="#">Лоджии</a></li>-->
-            <!--            </ul>-->
-          </li>
-          <li class="nav__item"><a href="{% url 'about' %}" class="nav__link">О компании</a></li>
-          <li class="nav__item"><a href="{% url 'works' %}" class="nav__link">Наши работы</a></li>
-          <li class="nav__item">
-            <a href="{% url 'service' %}" class="nav__link">Услуги</a>
-            <ul class="submenu">
-              <li class="submenu__item"></li>
-            </ul>
-          </li>
-          <li class="nav__item"><a href="{% url 'blog' %}" class="nav__link">Новости</a></li>
-          <li class="nav__item"><a href="{% if activate_page %} {% url 'contact' %}{% else %}#{% endif %}" {% if not activate_page %} data-popup="contact" {% endif %} class="nav__link">Контакты</a></li>
-        </ul>
-        <button class="header__close close" id="menu-close"></button>
-      </nav>
-      <button class="header__burger burger" id="burger"><span></span></button>
+<header class="header">
+  <div class="header__under">
+    <div class="header__container-under">
+      <a href="tel:{{ settings.phone_one }}" class="header__under-phone">{{ settings.phone_one }}</a>
+      {% csrf_token %}
+      <p>asdasdasd</p>
+      <p>asdasdasd</p>
+      <p>asdasdasd</p>
+      <p>asdasdasd</p>
+      <p>asdasdasd</p>
+      <select name="fillal" id="branch-select" class="header__under-select">
+        <option value="23">{{ site_settings.address_one }}</option>
+        <option value="24">{{ site_settings.address_two }}</option>
+      </select>
     </div>
   </div>
-</header>
+  <div class="header__top top-header">
+    {{ branchs.phone }}
+    <div class="top-header__container">
+      <div class="container">
+        <div class="top-header__inner">
+          <a href="/" class="top-header__logo">
+            {% if site_settings.logo %}
+            <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.phone_one }}"/>
+            {% else %} Logo {% endif %}
+          </a>
+          <div class="top-header__nav nav">
+            <a href="/" class="top-header__logo logo-mb">
+              {% if site_settings.logo %}
+              <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.phone_one }}"/>
+              {% else %} Logo {% endif %}
+            </a>
+            <ul class="nav__list">
+              <li class="nav__item">
+                <a href="{% url 'category' %}" class="nav__link">Виды меню</a>
+                <button type="button" class="nav__submenu-btn">
+                  <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                {% if categorys %}
+                <ul class="submenu">
+                  {% for category in cat %}
+                  <li class="submenu__item"><a href="{{ category.get_absolute_url }}" class="submenu__link"> {{
+                    category.name }}</a></li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+              </li>
+              <li class="nav__item">
+                <a href="{% url 'service' %}" class="nav__link">Услуги</a>
+                <button type="button" class="nav__submenu-btn">
+                  <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                {% if services %}
+                <ul class="submenu">
+                  {% for service in services %}
+                  <li class="submenu__item"><a href="{{ service.get_absolute_url }}" class="submenu__link"> {{
+                    service.name }}</a></li>
+                  {% endfor %}
+                </ul>
+                {% endif %}
+              </li>
+              <li class="nav__item">
+                <a href="{% url 'about' %}" class="nav__link">О нас</a>
+                <button type="button" class="nav__submenu-btn">
+                  <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <ul class="submenu">
+                  <li class="submenu__item"><a href="{% url 'stock' %}" class="submenu__link">Акции</a></li>
+                  <li class="submenu__item"><a href="{% url 'news' %}" class="submenu__link">Новости</a></li>
+                  <li class="submenu__item"><a href="{% url 'blog' %}" class="submenu__link">Статьи</a></li>
+                </ul>
+              </li>
+              <li class="nav__item"><a href="{% url 'vacancies' %}" class="nav__link">Вакансии</a></li>
+              <li class="nav__item"><a href="{% url 'reviews' %}" class="nav__link">Отзывы</a></li>
+              <li class="nav__item"><a href="{% url 'gallery' %}" class="nav__link">Галерея</a></li>
+              <li class="nav__item"><a href="{% url 'contact' %}" class="nav__link">Контакты</a></li>
+            </ul>
+          </div>
+          <div class="top-header__actions">
+            <a href="tel:" class="top-header__actions-phone" id="header-phone">
+
+            </a>
+            <button type="button" data-popup="popup-callback">Связаться с нами</button>
+          </div>
+          <button type="button" class="top__header-burger burger" id="burger"><span></span></button>
+        </div>
+      </div>
+    </div>
+  </div>
 </header>

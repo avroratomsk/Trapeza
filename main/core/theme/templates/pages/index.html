@@ -8,140 +8,194 @@
 
 {% block content %}
 <main class="page">
-  {% include "../section/full-slider.html" %}
+  {% include "../section/full-slider.html" with home_page=home_page %}
 
-  <section class="advantages section--padded">
+  <div class="index-service">
+    <button type="button" class="index-service__union"
+            style="background-image: url({% static 'theme/img/Union.svg' %})">
+      <span>
+        <svg xmlns="http://www.w3.org/2000/svg"
+             viewBox="0 0 512 512">
+          <path
+            d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z"/>
+        </svg>
+      </span>
+    </button>
     <div class="container">
-      <div class="advantages__inner">
-        {% if home_page.meta_h1 %}
-        <h1 class="advantages__title-h1 title-h2">
-          {{ home_page.meta_h1 }}
-        </h1>
+      <div class="index-service__grid">
+        {% if services %}
+        {% for service in services %}
+        <a href="{{ service.get_absolute_url }}" class="index-service__item item-service">
+          <img src="{{ service.image.url }}" alt="" class="index-service__img">
+          <p class="index-service__title">{{ service.name }}</p>
+          <p class="index-service__descr">
+            {{ service.subtitle|truncatechars:150 }}
+          </p>
+        </a>
+        {% endfor %}
+        {% else %}
+        не заполнено
         {% endif %}
-        <p class="advantages__title _title">
-          <strong>Максимум</strong> — мы изготавливаем двери, отвечающие действующим стандартам качества.
-        </p>
-        <div class="advantages__row">
-          <div class="advantages__col">
-            <div class="advantages__item item-advantages">
-              <div class="item-advantages__icon">
-                <img src="{% static 'theme/img/icon/adv-1.svg' %}" alt="">
-              </div>
-              <p class="item-advantages__title">Любая сложность</p>
-              <p class="item-advantages__text">
-                При производстве входных дверей мы используем современное оборудование.
-              </p>
-            </div>
-          </div>
-          <div class="advantages__col">
-            <div class="advantages__item item-advantages">
-              <div class="item-advantages__icon">
-                <img src="{% static 'theme/img/icon/adv-2.svg' %}" alt="">
-              </div>
-              <p class="item-advantages__title">Качество</p>
-              <p class="item-advantages__text">
-                Мы гарантируем долгий срок службы нашей продукции за счет качественных материалов.
-              </p>
-            </div>
-
-          </div>
-          <div class="advantages__col">
-            <div class="advantages__item item-advantages">
-              <div class="item-advantages__icon">
-                <img src="{% static 'theme/img/icon/adv-3.svg' %}" alt="">
-              </div>
-              <p class="item-advantages__title">Безопасность</p>
-              <p class="item-advantages__text">
-                Особое внимание мы уделяем взломостойкости и износостойкости двери — выбираем лучшие комплектующие,
-                фурнитуру и замки.
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <section class="best-choice section--padded">
+  <div class="index-catalog" id="index-catalog">
     <div class="container">
-      <div class="best-choice__inner">
-        <h2 class="best-choice__title title-h2">Лучший выбор</h2>
-        <div class="best-choice__grid">
-          {% for product in products %}
-          {% include "../components/card.html" with product=product %}
+      <h2 class="index-catalog__title title--dark">Меню дня</h2>
+      <div class="index-catalog__tab tab">
+        <div class="day-single__days">
+          {% if categorys %}
+          {% for category in categorys %}
+          <a href="{{ category.get_absolute_url }}" data-id="{{ category.id }}" class="day-single__day category-link"
+             data-name="{{ category.name }}">
+            {{ category.name }}
+          </a>
           {% endfor %}
+          {% endif %}
         </div>
-        <a href="{% url 'category' %}" class="best-choice__btn btn btn--shadow">Перейти в каталог</a>
+      </div>
+      <div class="tab__content">
+        <div id="products-container"></div>
+        <div class="tab__content-grid" id="products-grid" data-name="{{ category.name }}">
+
+        </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <section class="selection section--padded">
-    <div class="selection__inner">
-      <div class="selection__body">
-        <div class="container">
-          <div class="selection__content">
-            <h2 class="selection__title">Подберите дверь уже сейчас</h2>
-            <a href="{% url 'category' %}" class="selection__btn btn btn--shadow">Перейти в каталог</a>
+  <div class="index-about">
+    <img src="{% static 'theme/mb/images/separator_detail.svg' %}" alt="" class="separator-img">
+    <div class="container">
+      <div class="index-about__inner">
+        <h2 class="index-about__title _title">Почему мы ?</h2>
+        <div class="index-about__who who">
+          <div class="who__grid">
+            <div class="who__item">
+              <div class="who__icon">
+                <i class="fa-solid fa-utensils"></i>
+              </div>
+              <p class="who__text">Домашняя кухня</p>
+            </div>
+            <div class="who__item">
+              <div class="who__icon">
+                <i class="fa-regular fa-face-smile"></i>
+              </div>
+              <p class="who__text">Душевность</p>
+            </div>
+            <div class="who__item">
+              <div class="who__icon">
+                <i class="fa-regular fa-thumbs-up"></i>
+              </div>
+              <p class="who__text">Уникальность</p>
+            </div>
+            <div class="who__item">
+              <div class="who__icon">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+              </div>
+              <p class="who__text">Креативность</p>
+            </div>
+            <div class="who__item">
+              <div class="who__icon">
+                <i class="fa-solid fa-shield-heart"></i>
+              </div>
+              <p class="who__text">Безопасность</p>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="selection__image">
-        <img src="{% static 'theme/img/dveri-seichas.jpeg' %}" alt="">
+        <div class="index-about__text">
+          <h2 class="index-about__title _title">Немного о нас </h2>
+          <div class="index-about__row">
+            <div class="index-about__col">{{ home_page.left_text | safe }}
+            </div>
+            <div class="index-about__col">{{ home_page.right_text | safe }}</div>
+          </div>
+          <a href="{% url 'about' %}" class="index-about__link">Подробнее о нас</a>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
 
   {% if reviews %}
     {% include "../includes/_reviews.html" %}
   {% endif %}
 
+  {% include "../includes/_callback.html" with home_page=home_page %}
+
+  <div class="index-blog">
+    <div class="container">
+      <h2 class="index-blog__title _title">Интересное для Вас</h2>
+      <div class="index-blog__tab">
+        <button type="button" class="index-blog__tigger _active" data-id="news">Новости</button>
+        <button type="button" class="index-blog__tigger" data-id="article">Статьи</button>
+        <button type="button" class="index-blog__tigger" data-id="stock">Акции</button>
+      </div>
+      <div class="index-blog__grid _active" id="news">
+        {% if news %}
+        {% for new in news %}
+        <div class="index-blog__item">
+          <a href="{{ new.get_absolute_url }}" class="index-blog__item-image">
+            {% if new.image %}
+            <img src="{{ new.image.url }}" alt="{{ new.name }}" title="{{ new.name }}">
+            {% else %}
+            <img src="{% static 'theme/mb/images/no-image.jpg' %}" alt="{{ new.name }}" title="{{ new.name }}">
+            {% endif %}
+          </a>
+          <div class="index-blog__item-content">
+            <a href="{{ new.get_absolute_url }}" class="index-blog__item-title">{{ new.name }}</a>
+            <p class="index-blog__item-text">{{ new.text|truncatechars:180 }}</p>
+            <a href="{{ new.get_absolute_url }}" class="index-blog__item-btn _btn">Читать</a>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+
+      <div class="index-blog__grid" id="article">
+        {% if articles %}
+        {% for article in articles %}
+        <div class="index-blog__item">
+          <a href="{{ article.get_absolute_url }}" class="index-blog__item-image">
+            {% if article.image %}
+            <img src="{{ article.image.url }}" alt="{{ article.name }}" title="{{ article.name }}">
+            {% else %}
+            <img src="{% static 'theme/img/no-image.jpg' %}" alt="{{ article.name }}" title="{{ article.name }}">
+            {% endif %}
+          </a>
+          <div class="index-blog__item-content">
+            <a href="{{ article.get_absolute_url }}" class="index-blog__item-title">{{ article.name }}</a>
+            <p class="index-blog__item-text">{{ new.text|truncatechars:180 }}</p>
+            <a href="{{ article.get_absolute_url }}" class="index-blog__item-btn _btn">Читать</a>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+
+      <div class="index-blog__grid" id="stock">
+        {% if stocks %}
+        {% for stock in stocks %}
+        <div class="index-blog__item">
+          <a href="{{ stock.get_absolute_url }}" class="index-blog__item-image">
+            {% if stock.image %}
+            <img src="{{ stock.image.url }}" alt="{{ stock.name }}" title="{{ stock.name }}">
+            {% else %}
+            <img src="{% static 'theme/mb/images/no-image.jpg' %}" alt="{{ stock.name }}" title="{{ stock.name }}">
+            {% endif %}
+          </a>
+          <div class="index-blog__item-content">
+            <a href="{{ stock.get_absolute_url }}" class="index-blog__item-title">{{ stock.title }}</a>
+            <p class="index-blog__item-text">{{ stock.description|truncatechars:100 }}</p>
+            <a href="{{ stock.get_absolute_url }}" class="index-blog__item-btn _btn">Читать</a>
+          </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
   {% include "../includes/_contact.html" %}
 
-  <section class="index-questions" style="background-image: url({% static 'theme/img/questions.jpeg' %})">
-    <div class="container">
-      <div class="index-questions__inner">
-        <div class="index-questions__body">
-          <h2 class="index-questions__title">Остались <br>вопросы ?</h2>
-          <p class="index-questions__subtitle">
-            Закажите звонок или обратитесь в чат на нашем сайте, менеджеры помогут вам выбрать лучший вариант для вас
-          </p>
-          <div class="index-questions__buttons">
-            <button class="index-questions__btn index-questions--order" data-popup="leave-request">Оставить заявку
-            </button>
-            <button class="index-questions__btn index-questions--callback" data-popup="callback">Заказать звонок
-            </button>
-          </div>
-          <div class="index-questions__social">
-            <a href=" https://t.me/+79879826810" target="_blank"><img src="{% static 'theme/img/icon/telegram.svg' %}"
-                                                                      alt="Двери Максимум телеграмм"></a>
-            <a href="https://vk.com/maximum2022" target="_blank"><img src="{% static 'theme/img/icon/vk.svg' %}"
-                                                                      alt="Двери Максимум вк"></a>
-            <p>
-              Подписывайтесь на нас, чтобы быть в курсе всех новостей и акций.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  {% if posts %}
-  <section class="index-news section--padded">
-    <div class="container">
-      <div class="index-news__inner">
-        <h2 class="index-news__title title-h2">Новости</h2>
-
-        <div class="index-news__slider swiper">
-          <div class="index-news__wrapper swiper-wrapper">
-            {% for post in posts %}
-            {% include "../components/blog-card.html" with post=post %}
-            {% endfor %}
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-  {% endif %}
 </main>
 {% endblock %}

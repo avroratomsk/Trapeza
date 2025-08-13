@@ -1,0 +1,38 @@
+{% load static %}{% load thumbnail %}
+<div class="callback">
+  {% if home_page.callback_image %}
+  {% thumbnail home_page.callback_image "1920x539" format="WEBP" crop="center" as im %}
+  <img src="{{ im.url }}"
+       alt="{{ home_page.callback_title }} - {{ home_page.callback_text }}"
+       title="{{ home_page.callback_title }} - {{ home_page.callback_text }}"
+       class="callback__image _bgImage"
+  >
+  {% endthumbnail %}
+  {% endif %}
+  <div class="container">
+    <div class="callback__inner">
+      {% if home_page.callback_title %}
+      <h2 class="callback__title _title">{{ home_page.callback_title }}</h2>
+      {% endif %}
+      {% if home_page.callback_text %}
+      <p class="callback__subtitle">{{ home_page.callback_text}}</p>
+      {% endif %}
+
+      <form action="" class="callback__form" method="POST">
+        {% csrf_token %}
+        <!--      {{ writetous.name }}{{ writetous.phone }}{{ writetous.message }}-->
+        <button type="submit" class="callback__submit">Отправить</button>
+        <div class="form__row">
+          <input type="checkbox" class="" name="agreement" id="agreement-callback">
+          <label for="agreement-callback" class="callback__label">
+            Мы используем cookie. Это позволяет нам анализировать взаимодействие посетителей с сайтом и делать его
+            лучше.
+            Продолжая пользоваться сайтом, вы соглашаетесь с использованием файлов <a
+            href="{% url 'cookie' %}">cookie</a> и <a href="{% url 'politika' %}">политикой
+            конфиденциальности</a>.
+          </label>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

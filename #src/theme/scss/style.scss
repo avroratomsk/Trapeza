@@ -14,6 +14,9 @@
 @import "./includes/_header";
 @import "./includes/_footer";
 @import "./includes/_popup";
+@import "./includes/_contact";
+@import "./includes/_cookie";
+@import "./includes/_single-banner";
 
 @import "global";
 @import "./pages/home";
@@ -23,6 +26,7 @@
 @import "./pages/_category";
 @import "./catalog/product";
 @import "./catalog/category-details";
+@import "./pages/_blog";
 
 // Стили секций
 @import "./section/slider-full";

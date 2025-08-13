@@ -10,6 +10,35 @@
   overflow: hidden;
 }
 
+._title {
+  line-height: 140%;
+  font-size: 45px;
+  position: relative;
+  z-index: 2;
+  color: $mainColor;
+
+  @media screen and (max-width: 520px) {
+    font-size: 30px;
+  }
+}
+
+
+.title--dark {
+  line-height: 110%;
+  font-weight: 400;
+  font-size: clamp(35px, 2.5vw, 45px);
+}
+
+._bgImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
 .btn {
   display: inline-block;
   padding: 25px 35px;
@@ -188,57 +217,25 @@
 }
 
 .text {
-  padding: 120px 0px;
-  line-height: 130%;
-
-  h1, h2, h3, h4, h5, h6 {
-    line-height: 120%;
-    margin-bottom: 10px;
-  }
-
-  h1 {
-    font-size: 35px;
-  }
-
   h2 {
-    font-size: 30px;
-    margin-bottom: 10px;
+    font-size: 35px;
+    color: rgba($color: $mainColor, $alpha: 1.0);
+    line-height: 120%;
+    margin-bottom: 20px;
+  }
+
+  &:not(:first-child) {
+    margin-top: 20px;
   }
 
   p {
-    line-height: 150%;
-    margin-bottom: 10px;
-    color: rgba($color: #000000, $alpha: .7);
-    font-size: 16px;
+    line-height: 140%;
+    color: rgba($color: $mainColor, $alpha: 1.0);
+    margin-bottom: 30px;
   }
-}
 
-.popup-ad {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: fixed;
-  max-width: 330px;
-  padding: 20px;
-  bottom: 100px;
-  right: 20px;
-  width: 100%;
-  background: red;
-  color: white;
-  font-size: 14px;
-  border-radius: 15px;
-  z-index: 99;
-
-  .close {
-    position: relative;
-    top: 0;
-    left: 0;
-    width: 10px;
-    height: 10px;
-
-    &::after,
-    &::before {
-      background-color: #ffffff;
-    }
+  img, picture {
+    max-width: 100%;
+    height: 100%;
   }
 }

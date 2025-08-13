@@ -5,14 +5,18 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.contrib import messages
-from admin.forms import ContactTemplateForm, ProductPropertiesForm, ProductionForm, WorksForm, AboutTemplateForm, OfficeForm, DeliveryForm, BlogSettingsForm, CategoryForm, ColorProductForm, GalleryCategoryForm, GalleryCategorySettingsForm, GalleryForm, GlobalSettingsForm, HomeTemplateForm, PostForm, BlogCategoryForm, ProductForm, ProductImageForm, RobotsForm, ServiceForm, ServicePageForm, ShopSettingsForm, StockForm, SubdomainForm, UploadFileForm
-from home.models import BaseSettings,Production, Gallery, GalleryCategory, HomeTemplate, RobotsTxt, Stock, About, Delivery, SalesOffices, ContactTemplate, Works
+
+from admin.forms import *
+from home.models import *
+
 from blog.models import BlogSettings, Post, BlogCategory
+from news.models import *
+
 from main.settings import BASE_DIR
 from subdomain.models import Subdomain
 from service.models import Service, ServicePage
 
-from shop.models import ColorProduct, Product, Category, ProductImage, Properties, ShopSettings
+from shop.models import *
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 import openpyxl
@@ -1152,3 +1156,98 @@ def admin_office_delete(request, pk):
   office.delete()
 
   return redirect(request.META.get('HTTP_REFERER'))
+
+""" Новости """
+@user_passes_test(lambda u: u.is_superuser)
+def news_settings(request):
+  try:
+    news_set = NewsSettings.objects.get()
+  except:
+    news_set = NewsSettings()
+    news_set.save()
+
+  try:
+   news = News.objects.all()
+  except:
+   news = News()
+
+  if request.method == "POST":
+    form_new = NewsPage(request.POST, request.FILES, instance=news_set)
+    if form_new.is_valid():
+      form_new.save()
+      return redirect(request.META.get('HTTP_REFERER'))
+    else:
+      return render(request, "news/news_settings.html", {"form": form_new})
+
+  news_set = NewsSettings.objects.get()
+
+  form = NewsPage(instance=news_set)
+
+  context = {
+    "form": form,
+    "news_set": news_set,
+    "items": news
+  }
+
+  return render(request, "news/news_settings.html", context)
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_news(request):
+  """
+  View, которая возвращаяет и отрисовывает все товары на странице
+  и разбивает их на пагинацию
+  """
+  news = News.objects.all().order_by('id')
+  context = {
+    "news": news
+  }
+  return render(request, "news/new/news.html", context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def news_add(request):
+  form = NewsForm()
+
+  if request.method == "POST":
+    form_new = NewsForm(request.POST, request.FILES)
+    if form_new.is_valid():
+      form_new.save()
+      url = reverse("news_settings") + "?tab=list"
+      return redirect(url)
+    else:
+      return render(request, "news/new_add.html", {"form": form_new})
+
+  context = {
+    "form": form
+  }
+
+  return render(request, "news/new_add.html", context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def news_edit(request, pk):
+  """
+    View, которая получает данные из формы редактирования товара
+    и изменяет данные внесенные данные товара в базе данных
+  """
+  news = News.objects.get(id=pk)
+  form = NewsForm(instance=news)
+
+  form_new = NewsForm(request.POST, request.FILES, instance=news)
+  if request.method == 'POST':
+    if form_new.is_valid():
+      form_new.save()
+      url = reverse("news_settings") + "?tab=list"
+      return redirect(url)
+    else:
+      return render(request, "news/new_edit.html", {"form": form_new})
+  context = {
+    "form":form
+  }
+  return render(request, "news/new_add.html", context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def news_delete(request, pk):
+  news = News.objects.get(id=pk)
+  news.delete()
+
+  return redirect('admin_news')

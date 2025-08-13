@@ -17,12 +17,27 @@ class BaseSettings(SingletonModel):
   
 
 class HomeTemplate(SingletonModel):
-  banner = models.ImageField(upload_to="home-page", blank=True, null=True, verbose_name="Картинка главной страницы")
+  banner = models.ImageField(upload_to="home-page", blank=True, null=True, verbose_name="Главная страница первый блок картинка")
+  untitle = models.CharField(max_length=50, blank=True, null=True, db_index=True, verbose_name="Надзаголовок")
+  title = models.CharField(max_length=50, blank=True, null=True, db_index=True, verbose_name="Заголовок")
+
+  title_why = models.CharField(max_length=50, default="Почему мы ?", blank=True, null=True, db_index=True, verbose_name="Заголовок")
+  left_text = models.TextField(null=True, blank=True, verbose_name="Левая колонка с текстом")
+  right_text = models.TextField(null=True, blank=True, verbose_name="Правая колонка с текстом")
+
   meta_h1 = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок первого уровня")
   meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
   meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
-  sale_text = models.CharField(max_length=250, blank=True, null=True, verbose_name="Текст скидки в всплывающем окне")
+
+  callback_image = models.ImageField(upload_to="home-page", null=True, blank=True, verbose_name="CallBack картинка")
+  callback_title = models.CharField(max_length=250, null=True, blank=True, default="Напишите нам !", verbose_name="Заголовок Callback")
+  callback_text = models.CharField(max_length=250, null=True, blank=True, verbose_name="CallBack текст")
+
+class WhyWeItems(models.Model):
+  icon = models.ImageField(upload_to="home-page", blank=True, null=True,  verbose_name="Иконка")
+  title = models.CharField(max_length=50, blank=True, null=True, db_index=True, verbose_name="Заголовок")
+
 
 class ContactTemplate(SingletonModel):
   activate_page = models.BooleanField(default=False, verbose_name="Включить страницу")
@@ -100,7 +115,6 @@ class Production(models.Model):
   meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
   meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
-  sale_text = models.CharField(max_length=250, blank=True, null=True, verbose_name="Текст скидки в всплывающем окне")
 
 class Delivery(models.Model):
   description = models.TextField(blank=True, null=True, verbose_name="Текст на странице")
