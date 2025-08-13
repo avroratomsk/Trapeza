@@ -1,0 +1,118 @@
+{% extends 'base.html' %}{% load static %}
+{% block title %}{{ service.meta_title }}{% endblock %}
+{% block description %}{{ service.description }}{% endblock %}
+{% block keywords %}{{ service.keywords }}{% endblock %}
+{% load thumbnail %} {% block content %}
+
+<main class="page" style="background-color: #efece6">
+  <div class="services color-pomin">
+    <section class="services__top">
+      <div class="container">
+        <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+          <a href="/" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+            class="breadcrumbs__item">
+            Главная
+            <meta itemprop="position" content="1" />
+          </a>
+          <a href="{% url 'service' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+            class="breadcrumbs__item">
+            Услуги
+            <meta itemprop="position" content="2" />
+          </a>
+          <span itemprop="name" class="breadcrumbs__item">
+            {{ service.name }}
+            <meta itemprop="position" content="3" />
+          </span>
+        </div>
+        <h1 class="services__top-title">{{ service.name }}</h1>
+        {% if service.subtitle %}
+        <p class="services__top-subtitle">{{ service.subtitle }}</p>
+        {% endif %}
+        <div class="services__top-action">
+          <button type="button" class="services__top-btn" data-popup="popup-pominalnye">Оставить заявку</button>
+        </div>
+      </div>
+      <img src="{% static 'theme/img/separator_pomin.svg' %}" alt="" width="100%"
+        class="body-service__separator" />
+    </section>
+
+    <section class="service-page__body body-service">
+      <div class="container">
+        <div class="body-service__row">
+          {% if branchs %} {% for branch in branchs %}
+          <div class="body-service__col">
+            <!-- {% if request.path == "/service/pominalnye-obedy/" %}{% endif %}-->
+            {% if forloop.counter == 2 %}
+            <h2 class="body-service__title _title">Заказать обед<br />в столовой</h2>
+            <p class="body-service__subtitle">У нас есть два зала с посадкой до 50 человек</p>
+            {% endif %}
+            <!-- <h2 class="body-service__title _title">
+              Заказать обед <br>в столовой
+            </h2>
+            <p class="body-service__subtitle">
+              У нас есть 2 зала с посадкой до 50 человек
+            </p> -->
+            <div class="body-service__image">
+              {% if branch.image %} {% thumbnail branch.image "790x490" format="WEBP" as im %}
+              <img src="{{ im.url }}" alt="{{ branch.name }}" title="{{ branch.name }}" />
+              {% endthumbnail %} {% else %}
+              <img src="{% static 'theme/mb/images/image-not-found.jpg' %}" alt="{{ branch.name }}"
+                title="{{ branch.name }}" />
+              {% endif %}
+              <span>{{ branch.address_fillial }}</span>
+            </div>
+          </div>
+          {% endfor %}{% endif %}
+        </div>
+      </div>
+    </section>
+
+    <section class="services-text">
+      <img src="{% static 'theme/mb/images/separator.svg' %}" alt="" width="100%" class="services-adv__separator" />
+      <div class="services-text__container">
+        <div class="services-text__row">
+          <div class="services-text__col">
+            <p>{{ pomin_page.left_text }}</p>
+          </div>
+          <div class="services-text__col">
+            <p>{{ pomin_page.right_text }}</p>
+          </div>
+        </div>
+        <div class="services-text__list">
+          <div class="services-text__list-left">
+            <h3>{{ pomin_page.first_text_title }}</h3>
+          </div>
+          <div class="services-text__list-right">
+            <p>{{ pomin_page.first_text_text }}</p>
+          </div>
+        </div>
+        <div class="services-text__list">
+          <div class="services-text__list-left">
+            <h3>{{ pomin_page.second_text_title }}</h3>
+          </div>
+          <div class="services-text__list-right">
+            <p>{{ pomin_page.second_text_text }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% if products %}
+    <section class="service-menu">
+      <div class="service-menu__container">
+        <h2 class="_title service-menu__title">{{ pomin_page.price }}</h2>
+        <div class="pominalnye">
+          {% for product in products %}
+          <ul class="pominalnye__item">
+            <li class="pominalnye__title">{{ product.name }}</li>
+          </ul>
+          {% endfor %}
+        </div>
+        <div class="services__top-action">
+          <button type="button" class="services__top-btn" data-popup="popup-pominalnye">Оставить заявку</button>
+        </div>
+      </div>
+    </section>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}

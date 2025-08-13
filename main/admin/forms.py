@@ -1,10 +1,10 @@
 from django import forms
 from home.models import *
-from blog.models import BlogSettings, Post, BlogCategory
-from subdomain.models import Subdomain, SubdomainContact
-from service.models import Service, ServicePage
+from blog.models import *
+from subdomain.models import *
+from service.models import *
 from news.models import *
-from shop.models import Category, ColorProduct, Product, ProductImage, ShopSettings,Properties
+from shop.models import *
 from .widgets import CustomImageWidget
 from django_ckeditor_5.widgets import CKEditor5Widget
 
@@ -196,43 +196,6 @@ class ProductForm(forms.ModelForm):
                 'class': INPUT_CLASS,
             }),
 
-        }
-
-class ProductPropertiesForm(forms.ModelForm):
-    class Meta:
-        model = Properties
-        fields = "__all__"
-        widgets = {
-            'name': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-                'placeholder': 'Название характеристики',
-                'id': 'id_char_name',
-
-            }),
-            'value': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-                'placeholder': 'Значение',
-                'id': 'id_char_value'
-            }),
-        }
-
-# Товар и опции товара
-class ProductImageForm(forms.ModelForm):
-    class Meta:
-        model = ProductImage
-
-        fields = [
-            'parent',
-            'src'
-        ]
-        labels = {
-            'src': 'Выбрать изображение'
-        }
-        widgets = {
-            'parent': forms.Select(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'src': CustomImageWidget(),
         }
 
 class PostForm(forms.ModelForm):
@@ -633,21 +596,7 @@ class SubdomainForm(forms.ModelForm):
             'class': INPUT_CLASS,
         }),
     }
-    
-    
-class ColorProductForm(forms.ModelForm):
-  class Meta:
-    model = ColorProduct
-    fields = "__all__"
-    widgets = {
-        'name': forms.TextInput(attrs={
-          'class': INPUT_CLASS
-        }),
-        'code_color': forms.TextInput(attrs={
-            'class': INPUT_CLASS,
-        }),
-    }
-    
+
 class SubdomainContactForm(forms.ModelForm):
   class Meta:
     model = SubdomainContact

@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from home.models import *
 from cart.models import Cart
 from news.models import *
-from home.forms import CallbackForm, OknaForm, ContactForm, OrderForm, ReviewsPopupForm
+from home.forms import *
 from home.callback_send import email_callback
 from blog.models import Post
 from shop.models import Category, Product
@@ -12,80 +12,6 @@ from reviews.models import Reviews
 from django.http import JsonResponse
 from django.db.models import Q
 import datetime
-
-def callback(request):
-  if request.method == "POST":
-    form = CallbackForm(request.POST)
-    if form.is_valid():
-      name  = form.cleaned_data['name']
-      phone = form.cleaned_data['phone']
-
-      title = 'Заказ обратного звонка'
-      messages = "Заказ обратного звонка:" + "\n" + "Имя: " +str(name) + "\n" + "Номер телефона: " + str(phone) + "\n"
-
-      email_callback(messages, title)
-
-      return JsonResponse({"success": "success"})
-    else:
-      return JsonResponse({'status': "error", 'errors': form.errors})
-
-  return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
-
-def order_form(request):
-  if request.method == "POST":
-    form = OrderForm(request.POST)
-    if form.is_valid():
-      name  = form.cleaned_data['name']
-      phone = form.cleaned_data['phone']
-      product = form.cleaned_data['product']
-
-      title = 'Заявка с заказом'
-      messages = "Заявка с заказом:" + "\n" + "Имя: " +str(name) + "\n" + "Номер телефона: " + str(phone) + "\n" + "Товар: " + str(product) + "\n"
-
-      email_callback(messages, title)
-
-      return JsonResponse({"success": "success"})
-    else:
-      return JsonResponse({'status': "error", 'errors': form.errors})
-
-  return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
-
-
-def contact_form(request):
-  if request.method == "POST":
-    form = ContactForm(request.POST)
-    if form.is_valid():
-      name  = form.cleaned_data['name']
-      phone = form.cleaned_data['phone']
-      title = 'Заказ обратного звонка'
-      messages = "Заказ обратного звонка:" + "\n" + "Имя: " +str(name) + "\n" + "Номер телефона: " + str(phone) + "\n"
-
-      email_callback(messages, title)
-
-      return JsonResponse({"success": "success"})
-    else:
-      return JsonResponse({'status': "error", 'errors': form.errors})
-
-  return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
-
-def okna_form(request):
-   if request.method == "POST":
-      form = OknaForm(request.POST)
-      if form.is_valid():
-        name  = form.cleaned_data['name']
-        phone = form.cleaned_data['phone']
-        page_name = form.cleaned_data['page_name']
-        title = 'Форма получения скидки'
-        messages = "Форма получения скидки:" + "\n" + "Имя: " +str(name) + "\n" + "Номер телефона: " + str(phone) + "\n" + "Скидка: " + str(page_name)
-
-        email_callback(messages, title)
-
-        return JsonResponse({"success": "success"})
-      else:
-        return JsonResponse({'status': "error", 'errors': form.errors})
-
-   return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
-
 
 def index(request):
   page = request.GET.get('page', 1)
@@ -259,3 +185,140 @@ def gallery(request):
     }
 
     return render(request, "pages/gallery.html", context)
+
+def callback(request):
+  if request.method == "POST":
+    form = CallbackForm(request.POST)
+    if form.is_valid():
+      name  = form.cleaned_data['name']
+      phone = form.cleaned_data['phone']
+      privacy = form.cleaned_data['agreement']
+      if privacy == True:
+        privacy_text = "Да"
+      else:
+        privacy_text = "Нет"
+
+      title = 'Заказ обратного звонка'
+      messages = "Заказ обратного звонка:" + "\n" + "*ИМЯ*: " +str(name) + "\n" + "*ТЕЛЕФОН*: " + str(phone) + "\n" + "Пользователь согласился с обработкой персональных данных:: " + privacy_text
+
+      email_callback(messages, title)
+      return redirect(request.META.get('HTTP_REFERER'))
+  else:
+    form = CallbackForm()
+
+  context = {
+    'form': form
+  }
+
+  return render(request, 'pages/callback-succes.html', context)
+
+def writetous(request):
+  if request.method == "POST":
+    form = WriteToUsForm(request.POST)
+    if form.is_valid():
+      name  = form.cleaned_data['name']
+      phone = form.cleaned_data['phone']
+      message = form.cleaned_data['message']
+      privacy = form.cleaned_data['agreement']
+      if privacy == True:
+        privacy_text = "Да"
+      else:
+        privacy_text = "Нет"
+      title = 'Форма Напишите нам'
+      messages = "Заказ обратного звонка:" + "\n" + "*ИМЯ*: " +str(name) + "\n" + "*ТЕЛЕФОН*: " + str(phone) + "\n" + "*Сообщение*: " + str(message) + "\n" + "Пользователь согласился с обработкой персональных данных:: " + privacy_text
+
+      email_callback(messages, title)
+      return redirect(request.META.get('HTTP_REFERER'))
+  else:
+    form = WriteToUsForm()
+
+  context = {
+    'form': form
+  }
+
+  return render(request, 'pages/callback-succes.html', context)
+
+def contacform(request):
+  if request.method == "POST":
+    form = ContactForm(request.POST)
+    if form.is_valid():
+      name  = form.cleaned_data['name']
+      phone = form.cleaned_data['phone']
+      email = form.cleaned_data['email']
+      message = form.cleaned_data['message']
+      privacy = form.cleaned_data['agreement']
+      if privacy == True:
+        privacy_text = "Да"
+      else:
+        privacy_text = "Нет"
+      title = 'Заявка со страницы контакты'
+      messages = "Заказ обратного звонка:" + "\n" + "*ИМЯ*: " +str(name) + "\n" + "*ТЕЛЕФОН*: " + str(phone)  + "\n" + "*Email*: " + str(email) + "\n" + "*Сообщение*: " + str(message) + "\n" + "Пользователь согласился с обработкой персональных данных:: " + privacy_text
+
+      email_callback(messages, title)
+      return redirect(request.META.get('HTTP_REFERER'))
+  else:
+    form = ContactForm()
+
+  context = {
+    'form': form
+  }
+
+  return render(request, 'pages/callback-succes.html', context)
+
+def consultation(request):
+  if request.method == "POST":
+    form = ConsultForm(request.POST)
+    if form.is_valid():
+      name  = form.cleaned_data['name']
+      phone = form.cleaned_data['phone']
+      data = form.cleaned_data['data']
+      number = form.cleaned_data['number']
+      reservation = form.cleaned_data['reservation']
+      privacy = form.cleaned_data['agreement']
+      if privacy == True:
+        privacy_text = "Да"
+      else:
+        privacy_text = "Нет"
+      title = 'Заказ консультации'
+      messages = "Заказ консультации:" + "\n" + "ИМЯ: " +str(name) + "\n" + "ТЕЛЕФОН: " + str(phone)  + "\n" + "Дата бронирования: " + str(data) + "\n" + "Количество человек: " + str(number) + "\n" + "Зал: " + str(reservation) + "\n" + "Пользователь согласился с обработкой персональных данных:: " + privacy_text
+
+      email_callback(messages, title)
+      return redirect(request.META.get('HTTP_REFERER'))
+  else:
+    form = ConsultForm()
+
+  context = {
+    'form': form
+  }
+
+  return render(request, 'pages/callback-succes.html', context)
+
+def reviewsform(request):
+  if request.method == "POST":
+    form = ReviewsForm(request.POST)
+    if form.is_valid():
+      name  = form.cleaned_data['name']
+      try:
+        rating = form.cleaned_data['rating']
+      except:
+          rating = 5
+      email = form.cleaned_data['email']
+      message = form.cleaned_data['message']
+      privacy = form.cleaned_data['agreement']
+      if privacy == True:
+        privacy_text = "Да"
+      else:
+        privacy_text = "Нет"
+      title = 'Отзыв с сайта'
+      messages = "Заказ обратного звонка:" + "\n" + "*ИМЯ*: " +str(name) + "\n" + "*Оценка*: " + str(rating)  + "\n" + "*Email*: " + str(email) + "\n" + "*Сообщение*: " + str(message) + "\n" + "Пользователь согласился с обработкой персональных данных:: " + privacy_text
+
+      email_callback(messages, title)
+      return redirect(request.META.get('HTTP_REFERER'))
+  else:
+    form = ReviewsForm()
+
+  context = {
+    'form': form
+  }
+
+  return render(request, 'pages/callback-succes.html', context)

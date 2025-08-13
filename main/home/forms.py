@@ -1,123 +1,172 @@
 from django import forms
-from home.models import HomeTemplate
-from shop.models import Category,Product
 
 class CallbackForm(forms.Form):
-  name = forms.CharField(widget=forms.TextInput(
+  name = forms.CharField(min_length=2, widget=forms.TextInput(
     attrs={
       'placeholder': 'Ваше имя',
+      'class': 'form__controls',
+      }
+  ))
+
+  phone = forms.CharField(min_length=2, widget=forms.TextInput(
+    attrs={
+      'placeholder': 'Ваш номер телефона',
       'class': 'form__controls'
+      }
+  ))
+  agreement = forms.BooleanField(
+      required=True,
+      label="Я согласен с условиями",
+      widget=forms.CheckboxInput(
+         attrs={
+           'id': 'agreement'
+         }
+  ))
+
+class WriteToUsForm(forms.Form):
+  name = forms.CharField(min_length=2, widget=forms.TextInput(
+    attrs={
+      'placeholder': 'Имя',
+      'class': 'callback__input',
+      }
+  ))
+
+  phone = forms.CharField(min_length=2, widget=forms.TextInput(
+    attrs={
+      'placeholder': 'Ваш номер телефона',
+      'class': 'callback__input',
+      }
+  ))
+
+  message = forms.CharField(min_length=2, widget=forms.TextInput(
+    attrs={
+      'placeholder': 'Сообщение',
+      'class': 'callback__input',
+      }
+  ))
+  agreement = forms.BooleanField(
+    required=True,
+    label="Я согласен с условиями",
+    widget=forms.CheckboxInput(
+       attrs={
+         'id': 'agreement'
+       }
+    ))
+
+class ConsultForm(forms.Form):
+  name = forms.CharField(widget=forms.TextInput(
+    attrs={
+      'placeholder': 'Имя',
+      'class': 'form__controls',
       }
   ))
 
   phone = forms.CharField(widget=forms.TextInput(
     attrs={
-      'placeholder': 'Ваш номер телефона',
-      'class': 'form__controls'
-      "data-input"
+      'placeholder': 'Телефон',
+      'class': 'form__controls',
       }
   ))
 
-class OknaForm(forms.Form):
-  name = forms.CharField(widget=forms.TextInput(
+  data = forms.CharField(widget=forms.TextInput(
     attrs={
-      'placeholder': 'Ваше имя',
-      'class': 'form__controls'
+      'class': 'form__controls',
       }
   ))
 
-  phone = forms.CharField(widget=forms.TextInput(
+  number = forms.CharField(widget=forms.TextInput(
     attrs={
-      'placeholder': 'Ваш номер телефона',
-      'class': 'form__controls'
-      "data-input"
+      'placeholder': 'Количество человек',
+      'class': 'form__controls',
       }
   ))
-  page_name = forms.CharField(widget=forms.TextInput())
+  reservation = forms.CharField(widget=forms.TextInput(
+    attrs={
+      'class': 'form__controls',
+      }
+  ))
+  agreement = forms.BooleanField(
+    required=True,
+    label="Я согласен с условиями",
+    widget=forms.CheckboxInput(
+       attrs={
+         'id': 'agreement'
+       }
+  ))
 
-  
-  
 class ContactForm(forms.Form):
-  name = forms.CharField(widget=forms.TextInput(
+  name = forms.CharField(min_length=2, widget=forms.TextInput(
     attrs={
-      'placeholder': 'Ваше имя',
-      'class': 'form__controls'
+      'placeholder': 'Имя',
+      'class': 'form__controls',
       }
   ))
 
-  phone = forms.CharField(widget=forms.TextInput(
+  phone = forms.CharField(min_length=2, widget=forms.TextInput(
     attrs={
-      'placeholder': 'Ваш номер телефона',
-      'class': 'form__controls'
-      "data-input"
-      }
-  ))
-  
-  social = forms.CharField(widget=forms.TextInput(
-    attrs={
-      'placeholder': 'Ваш номер телефона',
-      'class': 'form__controls'
-      "data-input"
-      }
-  ))
-  
-class OrderForm(forms.Form):
-  name = forms.CharField(widget=forms.TextInput(
-    attrs={
-      'placeholder': 'Ваше имя',
-      'class': 'form__controls'
+      'placeholder': 'Телефон',
+      'class': 'form__controls',
       }
   ))
 
-  phone = forms.CharField(widget=forms.TextInput(
+  email = forms.EmailField(min_length=2, widget=forms.TextInput(
     attrs={
-      'placeholder': 'Ваш номер телефона',
-      'class': 'form__controls'
-      "data-input"
-      }
-  ))
-  
-  product = forms.CharField()
-  
-class ConsultationForm(forms.Form):
-  name = forms.CharField(widget=forms.TextInput(
-    attrs={
-      'placeholder': 'Ваше имя',
-      'class': 'form__controls'
+      'placeholder': 'Email',
+      'class': 'form__controls',
       }
   ))
 
-  phone = forms.CharField(widget=forms.TextInput(
+  message = forms.CharField(min_length=2, widget=forms.TextInput(
     attrs={
-      'placeholder': 'Ваш номер телефона',
-      'class': 'form__controls'
-      "data-input"
+      'placeholder': 'Сообщение',
+      'class': 'form__controls',
+      'rows': 5
       }
   ))
-  
-  pagename = forms.CharField()
-  
-class ReviewsPopupForm(forms.Form):
-  name = forms.CharField(widget=forms.TextInput(
+  agreement = forms.BooleanField(
+    required=True,
+    label="Я согласен с условиями",
+    widget=forms.CheckboxInput(
+       attrs={
+         'id': 'agreement'
+       }
+    ))
+
+class ReviewsForm(forms.Form):
+  name = forms.CharField(min_length=2, widget=forms.TextInput(
     attrs={
-      'placeholder': 'Ваше имя',
-      'class': 'form__controls'
+      'placeholder': 'Имя',
+      'class': 'form__controls',
       }
   ))
 
-  phone = forms.CharField(widget=forms.TextInput(
+  email = forms.EmailField(min_length=2, widget=forms.TextInput(
     attrs={
-      'placeholder': 'Ваш номер телефона',
-      'class': 'form__controls'
-      "data-input"
+      'placeholder': 'Email',
+      'class': 'form__controls',
       }
   ))
-  
-  reviews = forms.CharField(
-        widget=forms.Textarea(attrs={
-            'placeholder': 'Ваш отзыв',
-            'class': 'form__controls',
-            'rows': 10
-        }),
-  )
+  rating = forms.CharField(widget=forms.TextInput(
+    attrs={
+      'placeholder': 'Имя',
+      'class': 'form__controls',
+      'type':'hidden',
+      'id':'form-reviews__rating'
+      }
+  ))
+  message = forms.CharField(min_length=2, widget=forms.TextInput(
+    attrs={
+      'placeholder': 'Сообщение',
+      'class': 'form__controls',
+      'rows': 5
+      }
+  ))
 
+  agreement = forms.BooleanField(
+    required=True,
+    label="Я согласен с условиями",
+    widget=forms.CheckboxInput(
+       attrs={
+         'id': 'agreement'
+       }
+  ))

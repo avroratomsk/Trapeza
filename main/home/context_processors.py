@@ -1,34 +1,43 @@
-from home.models import BaseSettings, SalesOffices, ContactTemplate
-from shop.models import Category
-from blog.models import BlogCategory
-from service.models import Service
-from reviews.models import Reviews
- 
+from home.models import *
+from home.forms import *
+from shop.models import *
+from service.models import *
+
 def load_settings(request):
-    return {'site_settings': BaseSettings.load()}
+    return {'settings': BaseSettings.load()}
 
-def category_menu(request):
-    return {'category_menu': Category.objects.all()}
+def load_branch(request):
+    return {'branchs': Branch.objects.all()[:2]}
 
-def category_blog(request):
-    return {'category_blog': BlogCategory.objects.all()}
+def load_category(request):
+    return {"cats": Category.objects.all().exclude(slug="bez-kategorii")}
 
-def services(request):
-    return {'services': Service.objects.filter(footer_view=True).order_by('-id')[:4]}
+def load_cat(request):
+    return {"cat": Category.objects.all().exclude(slug="bez-kategorii")}
 
-def offices(request):
-    return {'offices': SalesOffices.objects.all()}
+def load_service(request):
+    return {"services": Service.objects.filter(status=True).exclude(slug="priyti-pokushat")}
 
-def reviews(request):
-    return {'reviews': Reviews.objects.filter(status=True)}
-
-def activate_page(request):
+def setup(request):
     try:
-      contact_settings = ContactTemplate.objects.get()
+        setup = BaseSettings.objects.get()
     except:
-      contact_settings = ContactTemplate()
-    return {'activate_page': contact_settings.activate_page}
+        setup = []
 
-def static_theme_path(request):
-    from django.conf import settings
-    return {'STATIC_THEME_PATH': settings.STATIC_THEME_PATH}
+    return {"setup": setup}
+
+def callback(request):
+    callback = CallbackForm()
+    return {"callback": callback}
+
+def writetous(request):
+    writetous = WriteToUsForm()
+    return {"writetous": writetous}
+
+def contactform(request):
+    contactform = ContactForm()
+    return {"contactform": contactform}
+
+def reviewsform(request):
+    reviewsform = ReviewsForm()
+    return {"reviewsform": reviewsform}
