@@ -1,0 +1,37 @@
+<section class="contact section--padded">
+  <div class="container">
+    <div class="contact__top">
+      <h2 class="contact__title title-h2">Мы ждем вас в нашем офисе</h2>
+      <p class="contact__subtitle">
+        Будучи производителями, мы гарантируем бескомпромиссное качество изделий и конкурентные цены на весь
+        ассортимент. Мы не работаем с посредниками, не используем дополнительные коммерческие наценки - поиски более
+        выгодного предложения в Самаре равносильны потере времени
+      </p>
+    </div>
+    <div class="contact__inner">
+      <div class="contact__search">
+        <!--          <form action="#" class="contact__form form">-->
+        <!--            <input type="text" placeholder="Поиск адреса" name="search-city" class="form__input contact__input">-->
+        <!--          </form>-->
+        <div class="contact__address contact-address">
+          {% if offices %}
+          {% for office in offices %}
+          <div class="contact-address__card">
+            <p class="contact-address__name">{{ office.name }}</p>
+            <p class="contact-address__address">{{ office.address }}</p>
+            <a href="tel:{{ office.phone }}" class="contact-address__phone">{{ office.phone }}</a>
+            <p class="contact-address__work-time">{{ office.time_work }}</p>
+          </div>
+          {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+      <div class="contact__map">
+        <iframe
+          src="https://yandex.ru/map-widget/v1/?um=constructor%3A75ce917ada534b864e9cc9234414de97d2a68069a38bedb50d8bae5c2029b6c5&amp;source=constructor"
+          width="100%" height="500" frameborder="0"></iframe>
+      </div>
+    </div>
+
+  </div>
+</section>
