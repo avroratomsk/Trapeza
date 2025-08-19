@@ -3510,6 +3510,12 @@ body::after {
   padding: 100px 0px 100px;
 }
 
+.services__top .breadcrumbs {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
 .services__top .breadcrumbs__item {
   color: white;
 }

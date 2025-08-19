@@ -2,6 +2,7 @@ import("./modules/dorpdownMenu.js");
 import("./modules/generateSlug.js");
 import("./modules/tabs/settings-tab.js");
 import("./modules/uploadFileInput.js");
+import("./modules/changeTemplate.js");
 
 /**
  * Переключение вкладок на страницах продуктов, категорий

@@ -1,33 +1,18 @@
 <header class="header">
-  <div class="header__under">
-    <div class="header__container-under">
-      <a href="tel:{{ settings.phone_one }}" class="header__under-phone">{{ settings.phone_one }}</a>
-      {% csrf_token %}
-      <p>asdasdasd</p>
-      <p>asdasdasd</p>
-      <p>asdasdasd</p>
-      <p>asdasdasd</p>
-      <p>asdasdasd</p>
-      <select name="fillal" id="branch-select" class="header__under-select">
-        <option value="23">{{ site_settings.address_one }}</option>
-        <option value="24">{{ site_settings.address_two }}</option>
-      </select>
-    </div>
-  </div>
   <div class="header__top top-header">
     {{ branchs.phone }}
     <div class="top-header__container">
       <div class="container">
         <div class="top-header__inner">
           <a href="/" class="top-header__logo">
-            {% if site_settings.logo %}
-            <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.phone_one }}"/>
+            {% if settings.logo %}
+            <img src="{{ settings.logo.url }}" alt="{{ settings.phone_one }}"/>
             {% else %} Logo {% endif %}
           </a>
           <div class="top-header__nav nav">
             <a href="/" class="top-header__logo logo-mb">
               {% if site_settings.logo %}
-              <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.phone_one }}"/>
+              <img src="{{ settings.logo.url }}" alt="{{ settings.phone_one }}"/>
               {% else %} Logo {% endif %}
             </a>
             <ul class="nav__list">

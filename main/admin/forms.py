@@ -542,44 +542,65 @@ class ServicePageForm(forms.ModelForm):
     
 class ServiceForm(forms.ModelForm):
   """ Form, добавление и редактирование услуг"""
-  # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
-  
+
+  # Переопределяем template_type, чтобы вставить "Выберите шаблон"
+  template_type = forms.ChoiceField(
+    choices=[('', '— Выберите шаблон —')] + Service.TEMPLATE_CHOICES,
+    required=True,
+    label="Выбор шаблона страницы",
+    widget=forms.Select(attrs={
+        'class': 'form__controls-select',
+    })
+  )
+
   class Meta:
     model = Service
     fields = '__all__'
     widgets = {
       'name': forms.TextInput(attrs={
-        'class': INPUT_CLASS,
-        'id': 'name'
+          'class': INPUT_CLASS,
+          'id': 'name'
       }),
       'slug': forms.TextInput(attrs={
-        'class':INPUT_CLASS,
-        "id": "slug"
-      }),
-      'description': forms.Textarea(attrs={
           'class': INPUT_CLASS,
+          "id": "slug"
       }),
+      'description': CKEditor5Widget(
+          attrs={'class': 'django_ckeditor_5'},
+          config_name='extends'
+      ),
       'status': forms.CheckboxInput(attrs={
-        'class': 'form__controls-checkbox',
+          'class': 'form__controls-checkbox',
       }),
       'meta_h1': forms.TextInput(attrs={
-        'class': INPUT_CLASS,
+          'class': INPUT_CLASS,
       }),
       'meta_title': forms.TextInput(attrs={
-        'class': INPUT_CLASS,
+          'class': INPUT_CLASS,
       }),
       'meta_description': forms.Textarea(attrs={
-        'class': INPUT_CLASS,
-        'rows': 5,
+          'class': INPUT_CLASS,
+          'rows': 5,
       }),
       'meta_keywords': forms.TextInput(attrs={
-        'class': INPUT_CLASS
+          'class': INPUT_CLASS
       }),
-      'description':CKEditor5Widget(
+      'left_text': CKEditor5Widget(
          attrs={'class': 'django_ckeditor_5'},
          config_name='extends'
-      )
+      ),
+      'price': forms.TextInput(attrs={
+          'class': INPUT_CLASS
+      }),
     }
+
+  def clean_template_type(self):
+    """Не позволяем сохранить пустой выбор"""
+    value = self.cleaned_data.get('template_type')
+    if not value:
+        raise forms.ValidationError("Сначала выберите шаблон.")
+    return value
+
     
 class SubdomainForm(forms.ModelForm):
   class Meta:

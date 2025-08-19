@@ -143,6 +143,15 @@
     }
   }
 
+  //.form__controls-select
+  &__controls-select {
+    padding: 15px 20px;
+    border: 1px solid rgba($color: $mainColor, $alpha: .1);
+    border-radius: 4px;
+    font-size: 14px;
+    color: rgba($color: $mainColor, $alpha: .9);
+  }
+
   .form__remove {
     color: red;
   }
@@ -163,5 +172,13 @@
   li {
     color: rgba($color: red, $alpha: .8);
     font-size: 14px;
+  }
+}
+
+.banquet, .funeral {
+  display: none;
+
+  &.active {
+    display: flex;
   }
 }

@@ -837,6 +837,14 @@ ol {
   border-color: rgba(38, 53, 61, 0.4);
 }
 
+.form__controls-select {
+  padding: 15px 20px;
+  border: 1px solid rgba(38, 53, 61, 0.1);
+  border-radius: 4px;
+  font-size: 14px;
+  color: rgba(38, 53, 61, 0.9);
+}
+
 .form .form__remove {
   color: red;
 }
@@ -857,6 +865,18 @@ ol {
 .errorlist li {
   color: rgba(255, 0, 0, 0.8);
   font-size: 14px;
+}
+
+.banquet,
+.funeral {
+  display: none;
+}
+
+.banquet.active,
+.funeral.active {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .sort-admin {

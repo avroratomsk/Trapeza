@@ -14,15 +14,38 @@ class ServicePage(SingletonModel):
     db_table = 'service_page'
 
 class Service(models.Model):
+  TEMPLATE_CHOICES = [
+    ("banquet", "Организация банкетов"),
+    ("funeral", "Поминальные обеды"),
+    ("default", "Стандартный шаблон"),
+  ]
   name = models.CharField(max_length=250, blank=True, null=True, verbose_name="Название услуги")
   slug = models.SlugField(max_length=150, unique=True, verbose_name="URL")
   image = models.ImageField(upload_to="services", blank=True, null=True, verbose_name="Изображение услуги")
   subtitle = models.TextField(blank=True, null=True, verbose_name="Текст под заголвком")
   status = models.BooleanField(default=True, verbose_name="Статус публикации")
+  template_type = models.CharField(max_length=50, choices=TEMPLATE_CHOICES, default="default", verbose_name="Шаблон отображения" )
   meta_h1 = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета H1")
   meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
   meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
+
+  # поминальные обеды
+  left_text = models.TextField(null=True, blank=True, verbose_name="Левый текст")
+  price = models.CharField(max_length=250, null=True, blank=True, verbose_name="Цена")
+
+  right_text = models.TextField(null=True, blank=True, verbose_name="Правый текст текст")
+  first_text_title = models.CharField(max_length=250, null=True, blank=True, verbose_name="Первый заголовок текста")
+  first_text_text = models.TextField(null=True, blank=True, verbose_name=" текст")
+  second_text_title = models.CharField(max_length=250, null=True, blank=True, verbose_name="Второй заголовок текста")
+  second_text_text = models.TextField(null=True, blank=True, verbose_name="текст")
+
+  # Организация банкетов
+  text_one = models.CharField(max_length=200, null=True, blank=True, verbose_name="Текст")
+  text_two = models.CharField(max_length=200, null=True, blank=True, verbose_name="Текст")
+  text_three = models.CharField(max_length=200, null=True, blank=True, verbose_name="Текст")
+  text_four = models.CharField(max_length=200, null=True, blank=True, verbose_name="Текст")
+
 
   class Meta:
     db_table = 'service'
