@@ -175,10 +175,18 @@
   }
 }
 
-.banquet, .funeral {
-  display: none;
+
+
+.banquet,
+.funeral,
+.default {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
 
   &.active {
-    display: flex;
+    max-height: 500px; /* побольше, чем содержимое */
+    opacity: 1;
   }
 }

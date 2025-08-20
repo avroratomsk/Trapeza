@@ -19,7 +19,7 @@ def service(request):
     # Дополнительные действия на ваше усмотрение
 
   context = {
-    "service_page": service_page,
+    "service": service_page,
     "services": services
   }
   return render(request, "pages/service/service.html", context)
@@ -27,41 +27,16 @@ def service(request):
 def service_detail(request, slug):
   category = ServiceCategory.objects.all()
   service = Service.objects.get(slug=slug)
-  try:
-    pomin = PominalnyeObed.objects.get()
-  except:
-    pomin = PominalnyeObed()
-
-  try:
-    banket = Banket.objects.get()
-  except:
-    banket = Banket()
-
-
-  category = ServiceCategory.objects.all()
-  if request.path != "/service/pominalnye-obedy/":
-    try:
-      product = ServiceProduct.objects.filter(service=service, category_id=1)
-    except:
-      pass
-  else:
-    try:
-      product = ServiceProduct.objects.filter(service=service)
-    except:
-      pass
+  products = ServiceProduct.objects.filter(status=True)
 
   context = {
     "service": service,
-    "products": product,
-    "categorys": category,
-    "pomin_page": pomin,
-    "banket_page": banket
+    "products": products,
+#     "categorys": category,
   }
 
-  if request.path == "/service/pominalnye-obedy/":
-    return render(request, "pages/service/service_pominalnye.html", context)
-  else:
-    return render(request, "pages/service/service_detail.html", context)
+
+  return render(request, "pages/service/service_detail.html", context)
 
 def get_data_service(request):
     data = json.loads(request.body)

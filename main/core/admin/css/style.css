@@ -868,15 +868,22 @@ ol {
 }
 
 .banquet,
-.funeral {
-  display: none;
+.funeral,
+.default {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .banquet.active,
-.funeral.active {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+.funeral.active,
+.default.active {
+  max-height: 500px;
+  /* побольше, чем содержимое */
+  opacity: 1;
 }
 
 .sort-admin {

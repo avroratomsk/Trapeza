@@ -685,37 +685,6 @@ def admin_home(request):
   
   return render(request, "static/home_page.html", context)
 
-def admin_service_page(request):
-  try:
-     serv_page = ServicePage.objects.get()
-  except:
-     serv_page = ServicePage()
-     serv_page.save()
-
-  try:
-    items = Service.objects.all()
-  except:
-    items = Service()
-
-  if request.method == "POST":
-     form_new = ServicePageForm(request.POST, request.FILES, instance=serv_page)
-     if form_new.is_valid():
-       form_new.save()
-
-       return redirect(request.META.get('HTTP_REFERER'))
-     else:
-       return render(request, "serv/serv_settings.html", {"form": form_new})
-
-  serv_page = ServicePage.objects.get()
-
-  form = ServicePageForm(instance=serv_page)
-  context = {
-     "form": form,
-     "serv_page":serv_page,
-     "items": items
-  }
-  
-  return render(request, "serv/serv_settings.html", context)
 
 def admin_stock(request):
   stocks = Stock.objects.all()
@@ -765,6 +734,44 @@ def stock_delete(request, pk):
   stock.delete()
   return redirect("admin_stock")
 
+def admin_service_page(request):
+  try:
+     serv_page = ServicePage.objects.get()
+  except:
+     serv_page = ServicePage()
+     serv_page.save()
+
+  try:
+    products = ServiceProduct.objects.all()
+    items = Service.objects.all()
+    categories = ServiceCategory.objects.all()
+  except:
+    products = ServiceProduct()
+    items = Service()
+    categories = ServiceCategory()
+
+  if request.method == "POST":
+     form_new = ServicePageForm(request.POST, request.FILES, instance=serv_page)
+     if form_new.is_valid():
+       form_new.save()
+
+       return redirect(request.META.get('HTTP_REFERER'))
+     else:
+       return render(request, "serv/serv_settings.html", {"form": form_new})
+
+  serv_page = ServicePage.objects.get()
+
+  form = ServicePageForm(instance=serv_page)
+  context = {
+     "form": form,
+     "serv_page":serv_page,
+     "items": items,
+     "products": products,
+     "categories": categories,
+  }
+
+  return render(request, "serv/serv_settings.html", context)
+
 def service_add(request):
   form = ServiceForm()
   
@@ -793,7 +800,7 @@ def service_edit(request, pk):
       url = reverse("admin_service_page") + "?tab=list"
       return redirect(url)
     else:
-      return render(request, "serv/stock_edit.html", {"form": form_new})
+      return render(request, "serv/serv_edit.html", {"form": form_new})
   
   context = {
     "form": form
@@ -805,6 +812,95 @@ def service_delete(request, pk):
   service = Service.objects.get(id=pk)
   service.delete()
   url = reverse("admin_service_page") + "?tab=list"
+  return redirect(url)
+
+@user_passes_test(lambda u: u.is_superuser)
+def service_category_add(request):
+  form = ServiceCategoryForm()
+
+  if request.method == "POST":
+    form_new = ServiceCategoryForm(request.POST, request.FILES)
+    if form_new.is_valid():
+      form_new.save()
+      url = reverse("admin_service_page") + "?tab=categories"
+      return redirect(url)
+    else:
+      return render(request, "serv/serv_add.html", {"form": form_new})
+
+  context = {
+    "form": form
+  }
+
+  return render(request, "serv/serv_add.html", context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def service_category_edit(request, pk):
+  category = ServiceCategory.objects.get(id=pk)
+  form = ServiceCategoryForm(instance=category)
+  if request.method == "POST":
+    form_new = ServiceCategoryForm(request.POST, request.FILES, instance=category)
+    if form_new.is_valid():
+      form_new.save()
+      url = reverse("admin_service_page") + "?tab=categories"
+      return redirect(url)
+    else:
+      return render(request, "serv/serv_edit.html", {"form": form_new})
+
+  context = {
+    "form": form
+  }
+
+  return render(request, "serv/serv_edit.html", context)
+
+def service_category_delete(request, pk):
+  service = ServiceCategory.objects.get(id=pk)
+  service.delete()
+  url = reverse("admin_service_page") + "?tab=categories"
+  return redirect(url)
+
+@user_passes_test(lambda u: u.is_superuser)
+def service_product_add(request):
+  form = ServiceProductForm()
+
+  if request.method == "POST":
+    form_new = ServiceProductForm(request.POST, request.FILES)
+    if form_new.is_valid():
+      form_new.save()
+      url = reverse("admin_service_page") + "?tab=products"
+      return redirect(url)
+    else:
+      return render(request, "serv/serv_add.html", {"form": form_new})
+
+  context = {
+    "form": form
+  }
+
+  return render(request, "serv/serv_add.html", context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def service_product_edit(request, pk):
+  product = ServiceProduct.objects.get(id=pk)
+  form = ServiceProductForm(instance=product)
+  if request.method == "POST":
+    form_new = ServiceProductForm(request.POST, request.FILES, instance=product)
+    if form_new.is_valid():
+      form_new.save()
+      url = reverse("admin_service_page") + "?tab=products"
+      return redirect(url)
+    else:
+      return render(request, "serv/serv_edit.html", {"form": form_new})
+
+  context = {
+    "form": form
+  }
+
+  return render(request, "serv/serv_edit.html", context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def service_product_delete(request, pk):
+  product = ServiceProduct.objects.get(id=pk)
+  product.delete()
+  url = reverse("admin_service_page") + "?tab=products"
   return redirect(url)
 
 def admin_color(request):

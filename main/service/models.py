@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from admin.singleton_model import SingletonModel
+from multiselectfield import MultiSelectField
 
 class ServicePage(SingletonModel):
   name = models.CharField(max_length=255, blank=True, null=True, verbose_name="Название услуги")
@@ -46,10 +47,8 @@ class Service(models.Model):
   text_three = models.CharField(max_length=200, null=True, blank=True, verbose_name="Текст")
   text_four = models.CharField(max_length=200, null=True, blank=True, verbose_name="Текст")
 
-
   class Meta:
     db_table = 'service'
-
 
   def __str__(self):
     return self.name
@@ -58,10 +57,14 @@ class Service(models.Model):
       return reverse("service_detail", kwargs={"slug": self.slug})
 
 class ServiceProduct(models.Model):
+  TEMPLATE_CHOICES = [
+      ("banquet", "Организация банкетов"),
+      ("funeral", "Поминальные обеды"),
+  ]
+  service_type = MultiSelectField(choices=TEMPLATE_CHOICES,max_choices=2,max_length=100,default=[],verbose_name="Шаблон")
   name = models.CharField(max_length=250, null=True, blank=True, verbose_name="Название товара")
   image = models.ImageField(upload_to="service-product", blank=True, null=True, verbose_name="Изображение товара")
   price = models.CharField(max_length=250, null=True, blank=True, verbose_name="Цена")
-  service = models.ForeignKey("Service", on_delete=models.CASCADE, null=True, blank=True, default=None, verbose_name='Сервис')
   category = models.ForeignKey("ServiceCategory", on_delete=models.CASCADE, related_name="category_service", null=True, blank=True, default=None, verbose_name='Категория')
   slug = models.SlugField(max_length=150, unique=True, verbose_name="URL")
   meta_h1 = models.CharField(max_length=350, null=True, blank=True, verbose_name="Заголовок первого уровня")

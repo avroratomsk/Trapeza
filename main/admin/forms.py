@@ -569,6 +569,10 @@ class ServiceForm(forms.ModelForm):
           attrs={'class': 'django_ckeditor_5'},
           config_name='extends'
       ),
+      'subtitle': CKEditor5Widget(
+         attrs={'class': 'django_ckeditor_5'},
+         config_name='extends'
+      ),
       'status': forms.CheckboxInput(attrs={
           'class': 'form__controls-checkbox',
       }),
@@ -589,9 +593,44 @@ class ServiceForm(forms.ModelForm):
          attrs={'class': 'django_ckeditor_5'},
          config_name='extends'
       ),
+      'right_text': CKEditor5Widget(
+         attrs={'class': 'django_ckeditor_5'},
+         config_name='extends'
+      ),
       'price': forms.TextInput(attrs={
           'class': INPUT_CLASS
       }),
+      'first_text_title': forms.TextInput(attrs={
+          'class': INPUT_CLASS
+      }),
+      'first_text_text': CKEditor5Widget(
+         attrs={'class': 'django_ckeditor_5'},
+         config_name='extends'
+      ),
+      'second_text_title': forms.TextInput(attrs={
+          'class': INPUT_CLASS
+      }),
+      'second_text_text': CKEditor5Widget(
+         attrs={'class': 'django_ckeditor_5'},
+         config_name='extends'
+      ),
+      'text_one': CKEditor5Widget(
+        attrs={'class': 'django_ckeditor_5'},
+        config_name='extends'
+      ),
+      'text_two': CKEditor5Widget(
+        attrs={'class': 'django_ckeditor_5'},
+        config_name='extends'
+      ),
+      'text_three': CKEditor5Widget(
+        attrs={'class': 'django_ckeditor_5'},
+        config_name='extends'
+      ),
+      'text_four': CKEditor5Widget(
+        attrs={'class': 'django_ckeditor_5'},
+        config_name='extends'
+      ),
+
     }
 
   def clean_template_type(self):
@@ -601,7 +640,93 @@ class ServiceForm(forms.ModelForm):
         raise forms.ValidationError("Сначала выберите шаблон.")
     return value
 
-    
+class ServiceCategoryForm(forms.ModelForm):
+  """ Form, добавление и редактирование услуг"""
+  # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
+
+  class Meta:
+    model = ServiceCategory
+    fields = "__all__"
+    widgets = {
+      'name': forms.TextInput(attrs={
+        'class': 'form__controls',
+        'id': 'name'
+      }),
+      'slug': forms.TextInput(attrs={
+        'class':'form__controls',
+        "id": "slug"
+      }),
+      'meta_h1': forms.TextInput(attrs={
+        'class': 'form__controls',
+      }),
+      'meta_title': forms.TextInput(attrs={
+        'class': 'form__controls',
+      }),
+      'meta_description': forms.Textarea(attrs={
+        'class': 'form__controls',
+        'rows': 5,
+      }),
+      'meta_keywords': forms.TextInput(attrs={
+        'class': 'form__controls'
+      })
+    }
+
+class ServiceProductForm(forms.ModelForm):
+  """ Form, добавление и редактирование услуг"""
+  # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
+
+  class Meta:
+    model = ServiceProduct
+    fields = "__all__"
+    widgets = {
+      'service_type': forms.CheckboxSelectMultiple(
+          attrs={'class': 'form__controls-checkbox'}
+      ),
+      'name': forms.TextInput(attrs={
+        'class': 'form__controls',
+        'id': 'name'
+      }),
+      'slug': forms.TextInput(attrs={
+        'class':'form__controls',
+        "id": "slug"
+      }),
+      'price': forms.TextInput(attrs={
+        'class':'form__controls',
+      }),
+      'subtitle': forms.DateInput(attrs={
+        'class':'form__controls',
+      }),
+      'status': forms.CheckboxInput(attrs={
+        'class': 'form__controls-checkbox',
+      }),
+      'meta_h1': forms.TextInput(attrs={
+        'class': 'form__controls',
+      }),
+      'meta_title': forms.TextInput(attrs={
+        'class': 'form__controls',
+      }),
+      'meta_description': forms.Textarea(attrs={
+        'class': 'form__controls',
+        'rows': 5,
+      }),
+      'meta_keywords': forms.TextInput(attrs={
+        'class': 'form__controls'
+      }),
+      'service': forms.Select(attrs={
+        'class': 'form__controls'
+      }),
+      'category': forms.Select(attrs={
+        'class': 'form__controls'
+      })
+    }
+
+    def clean_template_type(self):
+      """Не позволяем сохранить пустой выбор"""
+      value = self.cleaned_data.get('service_type')
+      if not value:
+          raise forms.ValidationError("Сначала выберите шаблон.")
+      return value
+
 class SubdomainForm(forms.ModelForm):
   class Meta:
     model = Subdomain

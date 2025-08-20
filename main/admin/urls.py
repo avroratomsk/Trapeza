@@ -45,6 +45,15 @@ urlpatterns = [
     path('serv/add/', views.service_add, name='service_add'),
     path('serv/edit/<int:pk>/', views.service_edit, name='service_edit'),
     path('serv/delete/<int:pk>/', views.service_delete, name='service_delete'),
+
+    path('serv-category/add/', views.service_category_add, name='service_category_add'),
+    path('serv-category/edit/<int:pk>/', views.service_category_edit, name='service_category_edit'),
+    path('serv-category/delete/<int:pk>/', views.service_category_delete, name='service_category_delete'),
+
+    #URl - отвечающие за отображение услуг, редактирование и удаление услуг
+    path('serv-product/add/', views.service_product_add, name='service_product_add'),
+    path('serv-product/edit/<int:pk>/', views.service_product_edit, name='service_product_edit'),
+    path('serv-product/delete/<int:pk>/', views.service_product_delete, name='service_product_delete'),
     
     #URl - Шаблон главной страницы
     path('home/', views.admin_home, name='admin_home'),

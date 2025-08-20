@@ -28,22 +28,119 @@
         <!-- Основные настройки -->
         <div class="page-content__row">
           <div class="page-content__col">
-            <div class="form__group">
-              <label for="{{ form.template_type.id_for_label }}" class="form__controls-label">
-                <span>*</span>Выбор шаблона страницы<span>:</span> </label>
-              {{ form.template_type }}{{ form.template_type.error }}
+            <div class="form__grid">
+              {% if form.template_type %}
+              <div class="form__group">
+                <label for="{{ form.template_type.id_for_label }}" class="form__controls-label">
+                  <span>*</span>Выбор шаблона страниц<span>:</span> </label>
+                {{ form.template_type }}{{ form.template_type.error }}
+              </div>
+              {% endif %}
+
+              {% if form.name %}
+              <div class="form__group">
+                <label for="{{ form.name.id_for_label }}" class="form__controls-label">
+                  <span>*</span>Название <span>:</span></label>
+                {{ form.name }} {{ form.name.errors }}
+              </div>
+              {% endif %}
+
+              {% if form.price %}
+              <div class="form__group">
+                <label for="{{ form.price.id_for_label }}" class="form__controls-label">
+                  Цена <span>:</span></label>
+                {{ form.price }} {{ form.price.errors }}
+              </div>
+              {% endif %}
             </div>
+
+            {% if form.subtitle %}
             <div class="form__group">
-              <label for="{{ form.name.id_for_label }}" class="form__controls-label"><span>*</span>Название
-                <span>:</span></label>
-              {{ form.name }} {{ form.name.errors }}
+              <label for="{{ form.subtitle.id_for_label }}" class="form__controls-label">Подзаголовок: </label>
+              {{ form.subtitle }} {{ form.subtitle.errors }}
             </div>
-            <div class="form__group">
-              <label for="{{ form.description.id_for_label }}" class="form__controls-label"> Текст на
-                странице<span>:</span> </label>
-              {{ form.description }} {{ form.description.errors }}
+            {% endif %}
+
+            {% if form.left_text %}
+            <div class="form__group banquet funeral">
+              <label for="{{ form.left_text.id_for_label }}" class="form__controls-label">Левый текст: </label>
+              {{ form.left_text }} {{ form.left_text.errors }}
             </div>
+            {% endif %}
+
+            {% if form.right_text %}
+            <div class="form__group funeral">
+              <label for="{{ form.right_text.id_for_label }}" class="form__controls-label">Справо текст: </label>
+              {{ form.right_text }} {{ form.right_text.errors }}
+            </div>
+            {% endif %}
+
+            <div class="form__grid">
+              {% if form.first_text_title %}
+              <div class="form__group funeral">
+                <label for="{{ form.first_text_title.id_for_label }}" class="form__controls-label">Заголовок: </label>
+                {{ form.first_text_title }} {{ form.first_text_title.errors }}
+              </div>
+              {% endif %}
+
+              {% if form.first_text_text %}
+              <div class="form__group funeral">
+                <label for="{{ form.first_text_text.id_for_label }}" class="form__controls-label">Текст: </label>
+                {{ form.first_text_text }} {{ form.first_text_text.errors }}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="form__grid">
+              {% if form.second_text_title %}
+              <div class="form__group funeral">
+                <label for="{{ form.second_text_title.id_for_label }}" class="form__controls-label">Заголовок: </label>
+                {{ form.second_text_title }} {{ form.second_text_title.errors }}
+              </div>
+              {% endif %}
+
+              {% if form.second_text_text %}
+              <div class="form__group funeral">
+                <label for="{{ form.second_text_text.id_for_label }}" class="form__controls-label">Текст: </label>
+                {{ form.second_text_text }} {{ form.second_text_text.errors }}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="form__grid">
+              {% if form.text_one %}
+              <div class="form__group banquet">
+                <label for="{{ form.text_one.id_for_label }}" class="form__controls-label">Текст 1: </label>
+                {{ form.text_one }} {{ form.text_one.errors }}
+              </div>
+              {% endif %}
+
+              {% if form.text_two %}
+              <div class="form__group banquet">
+                <label for="{{ form.text_two.id_for_label }}" class="form__controls-label">Текст 2: </label>
+                {{ form.text_two }} {{ form.text_two.errors }}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="form__grid">
+              {% if form.text_three %}
+              <div class="form__group banquet">
+                <label for="{{ form.text_three.id_for_label }}" class="form__controls-label">Текст 3: </label>
+                {{ form.text_three }} {{ form.text_three.errors }}
+              </div>
+              {% endif %}
+
+              {% if form.text_four %}
+              <div class="form__group banquet">
+                <label for="{{ form.text_four.id_for_label }}" class="form__controls-label">Текст 4: </label>
+                {{ form.text_four }} {{ form.text_four.errors }}
+              </div>
+              {% endif %}
+            </div>
+
           </div>
+
           <div class="page-content__col">
             <div class="form__group">
               <label for="{{ form.slug.id_for_label }}" class="form__controls-label">
@@ -57,15 +154,26 @@
               {{ form.image }} {{ form.image.errors }}
             </div>
 
+            {% if form.service_type %}
+            <div class="form__group form__group-image">
+              <label for="{{ form.service_type.id_for_label }}" class="form__controls-label">Выбор сервиса:</label>
+              {{ form.service_type }} {{ form.service_type.errors }}
+            </div>
+            {% endif %}
 
+            {% if form.category %}
+            <div class="form__group form__group-image">
+              <label for="{{ form.category.id_for_label }}" class="form__controls-label">Категория :</label>
+              {{ form.category }} {{ form.category.errors }}
+            </div>
+            {% endif %}
+
+            {% if form.status %}
             <div class="form__group-checkbox">
               {{ form.status }} {{ form.status.errors }}
               <label for="{{ form.status.id_for_label }}" class="form__controls-label"> Опубликовать ? :</label>
             </div>
-            <div class="form__group-checkbox">
-              {{ form.footer_view }} {{ form.footer_view.errors }}
-              <label for="{{ form.footer_view.id_for_label }}" class="form__controls-label"> Выводить в футер? :</label>
-            </div>
+            {% endif %}
           </div>
         </div>
       </div>
