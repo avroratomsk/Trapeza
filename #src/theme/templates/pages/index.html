@@ -29,7 +29,7 @@
           <img src="{{ service.image.url }}" alt="" class="index-service__img">
           <p class="index-service__title">{{ service.name }}</p>
           <p class="index-service__descr">
-            {{ service.subtitle|truncatechars:150 }}
+            {{ service.subtitle|safe|truncatechars:150 }}
           </p>
         </a>
         {% endfor %}
@@ -138,12 +138,11 @@
             {% if new.image %}
             <img src="{{ new.image.url }}" alt="{{ new.name }}" title="{{ new.name }}">
             {% else %}
-            <img src="{% static 'theme/mb/images/no-image.jpg' %}" alt="{{ new.name }}" title="{{ new.name }}">
+            <img src="{% static 'theme/img/no-image.jpg' %}" alt="{{ new.name }}" title="{{ new.name }}">
             {% endif %}
           </a>
           <div class="index-blog__item-content">
-            <a href="{{ new.get_absolute_url }}" class="index-blog__item-title">{{ new.name }}</a>
-            <p class="index-blog__item-text">{{ new.text|truncatechars:180 }}</p>
+            <a href="{{ new.get_absolute_url }}" class="index-blog__item-title">{{ new.name|truncatechars:50 }}</a>
             <a href="{{ new.get_absolute_url }}" class="index-blog__item-btn _btn">Читать</a>
           </div>
         </div>
@@ -163,8 +162,7 @@
             {% endif %}
           </a>
           <div class="index-blog__item-content">
-            <a href="{{ article.get_absolute_url }}" class="index-blog__item-title">{{ article.name }}</a>
-            <p class="index-blog__item-text">{{ new.text|truncatechars:180 }}</p>
+            <a href="{{ article.get_absolute_url }}" class="index-blog__item-title">{{ article.name|truncatechars:80  }}</a>
             <a href="{{ article.get_absolute_url }}" class="index-blog__item-btn _btn">Читать</a>
           </div>
         </div>
@@ -180,12 +178,11 @@
             {% if stock.image %}
             <img src="{{ stock.image.url }}" alt="{{ stock.name }}" title="{{ stock.name }}">
             {% else %}
-            <img src="{% static 'theme/mb/images/no-image.jpg' %}" alt="{{ stock.name }}" title="{{ stock.name }}">
+            <img src="{% static 'theme/img/no-image.jpg' %}" alt="{{ stock.name }}" title="{{ stock.name }}">
             {% endif %}
           </a>
           <div class="index-blog__item-content">
-            <a href="{{ stock.get_absolute_url }}" class="index-blog__item-title">{{ stock.title }}</a>
-            <p class="index-blog__item-text">{{ stock.description|truncatechars:100 }}</p>
+            <a href="{{ stock.get_absolute_url }}" class="index-blog__item-title">{{ stock.title|truncatechars:80  }}</a>
             <a href="{{ stock.get_absolute_url }}" class="index-blog__item-btn _btn">Читать</a>
           </div>
         </div>

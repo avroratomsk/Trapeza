@@ -109,94 +109,6 @@ class BlogSettingsForm(forms.ModelForm):
           )
 
       }
-      
-class GalleryCategorySettingsForm(forms.ModelForm):
-  
-  class Meta:
-      model = GalleryCategory
-      fields = "__all__"
-      widgets = {
-          'meta_h1': forms.TextInput(attrs={
-              'class': 'form__controls',
-          }),
-          'meta_title': forms.TextInput(attrs={
-              'class': 'form__controls',
-          }),
-          'meta_description': forms.Textarea(attrs={
-              'class': 'form__controls',
-              "id": "meta_description"
-          }),
-          'meta_keywords': forms.TextInput(attrs={
-              'class': 'form__controls',
-          }),
-      }
-  
-class ProductForm(forms.ModelForm):
-    """ Form, отвечает за создание товара и редактирование товара"""
-    # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
-
-    class Meta:
-        model = Product
-        fields = "__all__"
-        widgets = {
-            'article': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-                "id":"article"
-            }),
-            'name': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-                "id":"name"
-            }),
-            'slug': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-                "id": "slug"
-            }),
-            'category': forms.Select(attrs={
-                'class': INPUT_CLASS,
-            }),
-#             'categories': forms.CheckboxSelectMultiple,
-            'manufacturer': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'manufacturer_description': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-             'manufacturer_description': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'price': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'sale': forms.NumberInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'installment': forms.Textarea(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'quantity': forms.NumberInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'quantity_purchase': forms.NumberInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'status': forms.CheckboxInput(attrs={
-              'class': 'form__controls-checkbox',
-            }),
-            'meta_h1': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'meta_title': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-            'meta_description': forms.Textarea(attrs={
-                'class': INPUT_CLASS,
-                "id": "meta_description"
-            }),
-            'meta_keywords': forms.TextInput(attrs={
-                'class': INPUT_CLASS,
-            }),
-
-        }
 
 class PostForm(forms.ModelForm):
     """ Form, отвечает за создание товара и редактирование товара"""
@@ -330,7 +242,134 @@ class CategoryForm(forms.ModelForm):
       # Показывать только корневые категории
       self.fields['parent'].queryset = Category.objects.filter(parent__isnull=True).exclude(id=self.instance.id if self.instance.pk else None)
 
-    
+class ProductForm(forms.ModelForm):
+    """ Form, отвечает за создание товара и редактирование товара"""
+    # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
+
+    class Meta:
+        model = Product
+        fields = [
+            'name',
+            'slug',
+            'short_description',
+            'description',
+            'meta_h1',
+            'meta_title',
+            'meta_description',
+            'meta_keywords',
+            'image',
+            'price',
+            'price_two',
+            'discount',
+            'quantity',
+            'category',
+            'day',
+            'branch',
+            'image',
+            'weight',
+            'weight_two',
+            'calories',
+            'proteins',
+            'fats',
+            'carbonhydrates',
+            'status',
+        ]
+        labels = {
+            'name': 'Название блюда',
+            'slug':'URL',
+            'short_description':'Короткое описание',
+            'description':'Полное описание',
+            'meta_h1':'Заголвок первого уровня',
+            'meta_title':'Meta title',
+            'meta_description':'Мета description',
+            'meta_keywords':'Meta keywords',
+            'image':'Изображение',
+            'price':'Цена',
+            'discount':'Скидка в (%)',
+            'quantity':'Количество',
+            'category':'Категория',
+            'day':'В какой день готовят',
+            'branch':'В каком из филлиалов',
+            'image': 'Превью изображения',
+            'weight':'Грамовка',
+            'calories': 'Каллорийность',
+            'proteins': 'Белки',
+            'fats': 'Жиры',
+            'carbonhydrates': 'Углеводы',
+            'status': 'Статус публикации'
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'form__controls',
+                "id":"name"
+                # 'placeholder': 'Название товара',
+            }),
+            'branch': forms.CheckboxSelectMultiple,
+            'short_description': forms.Textarea(attrs={
+                'class': 'form__controls',
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'form__controls'
+            }),
+            'meta_h1': forms.TextInput(attrs={
+                'class': 'form__controls',
+            }),
+            'day': forms.TextInput(attrs={
+                'class': 'form__controls',
+            }),
+            'meta_title': forms.TextInput(attrs={
+                'class': 'form__controls',
+            }),
+            'meta_description': forms.TextInput(attrs={
+                'class': 'form__controls',
+            }),
+            'meta_keywords': forms.TextInput(attrs={
+                'class': 'form__controls',
+            }),
+            'price': forms.NumberInput(attrs={
+                'class': 'form__controls',
+            }),
+            'price_two': forms.NumberInput(attrs={
+                'class': 'form__controls',
+            }),
+            'quantity': forms.NumberInput(attrs={
+                'class': 'form__controls',
+            }),
+            'slug': forms.TextInput(attrs={
+                'class': 'form__controls',
+                "id": "slug"
+            }),
+            'category': forms.Select(attrs={
+                'class': 'form__controls',
+            }),
+            'weight': forms.TextInput(attrs={
+                'class': 'form__controls',
+            }),
+            'weight_two': forms.TextInput(attrs={
+                'class': 'form__controls',
+            }),
+            'discount': forms.TextInput(attrs={
+                'class': 'form__controls',
+            }),
+            'image': forms.FileInput(attrs={
+                'class': 'submit-file',
+                'accept': 'image/*'
+            }),
+            'calories': forms.TextInput(attrs={
+                'class': "form__controls",
+            }),
+            'proteins': forms.TextInput(attrs={
+                'class': "form__controls",
+            }),
+            'fats': forms.TextInput(attrs={
+                'class': "form__controls",
+            }),
+            'carbonhydrates': forms.TextInput(attrs={
+                'class': "form__controls",
+            })
+        }
+
+
 class HomeTemplateForm(forms.ModelForm):
   """ Form, редактирование главной страницы"""
   # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
@@ -377,30 +416,6 @@ class HomeTemplateForm(forms.ModelForm):
           }),
       }
 
-class ProductionForm(forms.ModelForm):
-  class Meta:
-      model = Production
-      fields = "__all__"
-      widgets = {
-          'meta_h1': forms.TextInput(attrs={
-              'class': INPUT_CLASS,
-          }),
-          'meta_title': forms.TextInput(attrs={
-              'class': f"{INPUT_CLASS} meta_field",
-          }),
-          'meta_description': forms.Textarea(attrs={
-              'class': f"{INPUT_CLASS} meta_field",
-              'rows': 5
-          }),
-          'meta_keywords': forms.TextInput(attrs={
-              'class': INPUT_CLASS,
-          }),
-          'text_sale': forms.TextInput(attrs={
-              'class': INPUT_CLASS,
-          }),
-      }
-
-
 class ContactTemplateForm(forms.ModelForm):
   """ Form, редактирование страницы контакты"""
   # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
@@ -427,41 +442,39 @@ class ContactTemplateForm(forms.ModelForm):
           }),
       }
 
-
-
 class AboutTemplateForm(forms.ModelForm):
   """ Form, редактирование главной страницы"""
   # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
 
   class Meta:
-      model = About
-      fields = "__all__"
-      widgets = {
-          'name': forms.TextInput(attrs={
-              'class': INPUT_CLASS
-          }),
-          'meta_h1': forms.TextInput(attrs={
-              'class': INPUT_CLASS,
-          }),
-          'meta_title': forms.TextInput(attrs={
-              'class': f"{INPUT_CLASS} meta_field",
-          }),
-          'meta_description': forms.Textarea(attrs={
-              'class': f"{INPUT_CLASS} meta_field",
-              'rows': 5
-          }),
-          'meta_keywords': forms.TextInput(attrs={
-              'class': INPUT_CLASS,
-          }),
-          'description': CKEditor5Widget(
-             attrs={'class': 'django_ckeditor_5'},
-             config_name='extends'
-         ),
-         'description_two': CKEditor5Widget(
-            attrs={'class': 'django_ckeditor_5'},
-            config_name='extends'
-        )
-      }
+    model = AboutTemplate
+    fields = "__all__"
+    widgets = {
+      'name': forms.TextInput(attrs={
+          'class': INPUT_CLASS
+      }),
+      'meta_h1': forms.TextInput(attrs={
+          'class': INPUT_CLASS,
+      }),
+      'meta_title': forms.TextInput(attrs={
+          'class': f"{INPUT_CLASS} meta_field",
+      }),
+      'meta_description': forms.Textarea(attrs={
+          'class': f"{INPUT_CLASS} meta_field",
+          'rows': 5
+      }),
+      'meta_keywords': forms.TextInput(attrs={
+          'class': INPUT_CLASS,
+      }),
+      'description': CKEditor5Widget(
+         attrs={'class': 'django_ckeditor_5'},
+         config_name='extends'
+     ),
+     'description_two': CKEditor5Widget(
+        attrs={'class': 'django_ckeditor_5'},
+        config_name='extends'
+     )
+  }
            
 
     
@@ -674,14 +687,17 @@ class ServiceCategoryForm(forms.ModelForm):
 class ServiceProductForm(forms.ModelForm):
   """ Form, добавление и редактирование услуг"""
   # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
-
+  service_type = forms.ChoiceField(
+    choices=[('', '— Выберите услугу —')] + Service.TEMPLATE_CHOICES,
+    required=True,
+    widget=forms.Select(attrs={
+        'class': 'form__controls-select',
+    })
+  )
   class Meta:
     model = ServiceProduct
     fields = "__all__"
     widgets = {
-      'service_type': forms.CheckboxSelectMultiple(
-          attrs={'class': 'form__controls-checkbox'}
-      ),
       'name': forms.TextInput(attrs={
         'class': 'form__controls',
         'id': 'name'
@@ -764,102 +780,6 @@ class SubdomainContactForm(forms.ModelForm):
             'class': "form__controls-select",
         }),
     }
-    
-class GalleryForm(forms.ModelForm):
-  class Meta:
-    model = Gallery
-    fields = "__all__"
-    widgets = {
-        'name': forms.TextInput(attrs={
-          'class': INPUT_CLASS
-        }),
-    }
-
-class WorksForm(forms.ModelForm):
-  class Meta:
-    model = Works
-    fields = "__all__"
-    widgets = {
-        'name': forms.TextInput(attrs={
-          'class': INPUT_CLASS
-        }),
-        'text': CKEditor5Widget(
-            attrs={'class': 'django_ckeditor_5'},
-            config_name='extends'
-        )
-    }
-    
-class GalleryCategoryForm(forms.ModelForm):
-  class Meta:
-    model = GalleryCategory
-    fields = "__all__"
-    widgets = {
-        'name': forms.TextInput(attrs={
-          'class': INPUT_CLASS
-        }),
-        'slug': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-          "id": "slug"
-        }),
-        'meta_h1': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'meta_title': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'meta_description': forms.Textarea(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'meta_keywords': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-    }
-
-class DeliveryForm(forms.ModelForm):
-  class Meta:
-    model = Delivery
-    fields = "__all__"
-    widgets = {
-        'meta_h1': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'meta_title': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'meta_description': forms.Textarea(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'meta_keywords': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'description':CKEditor5Widget(
-            attrs={'class': 'django_ckeditor_5'},
-            config_name='extends'
-        ),
-        'description_two':CKEditor5Widget(
-            attrs={'class': 'django_ckeditor_5'},
-            config_name='extends'
-        )
-    }
-
-class OfficeForm(forms.ModelForm):
-  class Meta:
-    model = SalesOffices
-    fields = "__all__"
-    widgets = {
-        'name': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'address': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'phone': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-        'time_work': forms.TextInput(attrs={
-          'class': INPUT_CLASS,
-        }),
-    }
 
 """ Новости """
 class NewsPage(forms.ModelForm):
@@ -922,6 +842,52 @@ class NewsForm(forms.ModelForm):
             'class': 'submit-file',
             'accept': 'image/*'
         })
+    }
+
+
+class FillialForm(forms.ModelForm):
+  """ Form, отвечает за добавление филлиала и редактирование филлиала"""
+  class Meta:
+    model = Branch
+    fields = "__all__"
+    widgets = {
+      "name": forms.TextInput(attrs={
+          "class": "form__controls",
+          "id":"name"
+      }),
+      "address_fillial": forms.TextInput(attrs={
+          "class": "form__controls",
+          "id":"name",
+          "placeholder": "г.Томск, ул.Ленина 111"
+      }),
+      "phone": forms.TextInput(attrs={
+          "class": "form__controls",
+      }),
+      "time_work": forms.TextInput(attrs={
+          "class": "form__controls",
+      }),
+      "weekend": forms.TextInput(attrs={
+          "class": "form__controls",
+      }),
+      "number_seats": forms.TextInput(attrs={
+          "class": "form__controls",
+      }),
+      "hall_rental": forms.TextInput(attrs={
+          "class": "form__controls",
+      }),
+      "hall_rental_hollyday": forms.TextInput(attrs={
+          "class": "form__controls",
+      }),
+      "scheme_payment": forms.TextInput(attrs={
+          "class": "form__controls",
+      }),
+      "map_code": forms.Textarea(attrs={
+          "class": "form__controls",
+      }),
+      "slug": forms.TextInput(attrs={
+        "class":"form__controls",
+        "id": "slug"
+      })
     }
     
     

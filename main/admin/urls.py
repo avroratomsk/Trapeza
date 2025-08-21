@@ -116,4 +116,10 @@ urlpatterns = [
     path('news/edit/<int:pk>/', views.news_edit, name='news_edit'),
     path('news/delete/<int:pk>/', views.news_delete, name='news_delete'),
 
+    #URl - отвечающие за отображение филлиалов, редактирование и удаление филлиала
+    path('fillial/', views.admin_fillial, name='admin_fillial'),
+    path('fillial/add/', views.fillial_add, name='fillial_add'),
+    path('fillial/edit/<int:pk>/', views.fillial_edit, name='fillial_edit'),
+    path('fillial/delete/<int:pk>/', views.fillial_delete, name='fillial_delete'),
+
 ]

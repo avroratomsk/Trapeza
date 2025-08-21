@@ -29,151 +29,82 @@
         <div class="page-content__row">
           <div class="page-content__col">
             <div class="form__group">
-              <label for="{{ form.name.id_for_label }}" class="form__controls-label">Наименование: </label>
+              <label for="{{ form.name.id_for_label }}" class="form__controls-label"> <span>*</span>Название : </label>
               {{ form.name }} {{ form.name.errors }}
             </div>
+
+            <div class="form__group">
+              <label for="{{ form.description.id_for_label }}" class="form__controls-label">Состав : </label>
+              {{ form.description }} {{ form.description.errors }}
+            </div>
+
+            <div class="form__group">
+              <label for="{{ form.short_description.id_for_label }}" class="form__controls-label">Описание товара
+                : </label>
+              {{ form.short_description }} {{ form.short_description.errors }}
+            </div>
+
             <div class="form__grid">
-
-              {% if form.article %}
-              <div class="form__group">
-                <label for="{{ form.article.id_for_label }}" class="form__controls-label">Артикул: </label>
-                {{ form.article }} {{ form.article.errors }}
-              </div>
-              {% endif %}
-
-              {% if form.price %}
               <div class="form__group">
                 <label for="{{ form.price.id_for_label }}" class="form__controls-label">
                   <span>*</span>
-                  Цена :
+                  Цена 1:
                 </label>
                 {{ form.price }} {{ form.price.errors }}
               </div>
-              {% endif %}
-
-              {% if form.sale %}
               <div class="form__group">
-                <label for="{{ form.sale.id_for_label }}" class="form__controls-label">
+                <label for="{{ form.price_two.id_for_label }}" class="form__controls-label">
                   <span>*</span>
-                  Скидка :
+                  Цена 2:
                 </label>
-                {{ form.sale }} {{ form.sale.errors }}
+                {{ form.price_two }} {{ form.price_two.errors }}
               </div>
-              {% endif %}
 
-              {% if form.manufacturer %}
               <div class="form__group">
-                <label for="{{ form.manufacturer.id_for_label }}" class="form__controls-label">
-                  Производитель:
-                </label>
-                {{ form.manufacturer }} {{ form.manufacturer.errors }}
-              </div>
-              {% endif %}
-
-              {% if form.manufacturer_description %}
-              <div class="form__group">
-                <label for="{{ form.manufacturer_description.id_for_label }}" class="form__controls-label">
-                  Описание производителя:
-                </label>
-                {{ form.manufacturer_description }} {{ form.manufacturer_description.errors }}
-              </div>
-              {% endif %}
-
-              {% if form.installment %}
-              <div class="form__group">
-                <label for="{{ form.installment.id_for_label }}" class="form__controls-label">
-                  Рассрочка:
-                </label>
-                {{ form.installment }} {{ form.installment.errors }}
-              </div>
-              {% endif %}
-
-              {% if form.colors %}
-              <div class="form__group">
-                <label for="{{ form.colors.id_for_label }}" class="form__controls-label">
-                  Цветовая схема:
-                </label>
-                {{ form.colors }} {{ form.colors.errors }}
-              </div>
-              {% endif %}
-
-              {% if form.quantity_purchase %}
-              <div class="form__group">
-                <label for="{{ form.quantity_purchase.id_for_label }}" class="form__controls-label">
-                  Количество купленных :
-                </label>
-                {{ form.quantity_purchase }} {{ form.quantity_purchase.errors }}
-              </div>
-              {% endif %}
-
-              {% if form.sale %}
-              <div class="form__group">
-                <label for="{{ form.sale.id_for_label }}" class="form__controls-label">
+                <label for="{{ form.weight.id_for_label }}" class="form__controls-label">
                   <span>*</span>
-                  Цена со скидкой :
+                  Вес 1:
                 </label>
-                {{ form.sale }} {{ form.sale.errors }}
+                {{ form.weight }} {{ form.weight.errors }}
               </div>
-              {% endif %}
-
-              {% if form.quantity %}
               <div class="form__group">
-                <label for="{{ form.quantity.id_for_label }}" class="form__controls-label">
-                  Количество товара в наличии :
+                <label for="{{ form.weight_two.id_for_label }}" class="form__controls-label">
+                  <span>*</span>
+                  Вес 2:
                 </label>
+                {{ form.weight_two }} {{ form.weight_two.errors }}
+              </div>
+
+              <div class="form__group">
+                <label for="{{ form.discount.id_for_label }}" class="form__controls-label"> Скидка в (<span>% :</span>)
+                </label>
+                {{ form.discount }} {{ form.discount.errors }}
+              </div>
+              <div class="form__group">
+                <label for="{{ form.calories.id_for_label }}" class="form__controls-label"> Каллории: </label>
+                {{ form.calories }} {{ form.calories.errors }}
+              </div>
+              <div class="form__group">
+                <label for="{{ form.proteins.id_for_label }}" class="form__controls-label"> Белки: </label>
+                {{ form.proteins }} {{ form.proteins.errors }}
+              </div>
+              <div class="form__group">
+                <label for="{{ form.fats.id_for_label }}" class="form__controls-label"> Жиры: </label>
+                {{ form.fats }} {{ form.fats.errors }}
+              </div>
+              <div class="form__group">
+                <label for="{{ form.carbonhydrates.id_for_label }}" class="form__controls-label"> Углеводы: </label>
+                {{ form.carbonhydrates }} {{ form.carbonhydrates.errors }}
+              </div>
+              <div class="form__group">
+                <label for="{{ form.quantity.id_for_label }}" class="form__controls-label"> Количество на
+                  складе: </label>
                 {{ form.quantity }} {{ form.quantity.errors }}
               </div>
-              {% endif %}
-
-              {% if form.address %}
-              <div class="form__group">
-                <label for="{{ form.address.id_for_label }}" class="form__controls-label">
-                  Адрес :
-                </label>
-                {{ form.address }} {{ form.address.errors }}
-              </div>
-              {% endif %}
-
-              {% if form.phone %}
-              <div class="form__group">
-                <label for="{{ form.phone.id_for_label }}" class="form__controls-label">
-                  Номер телефона :
-                </label>
-                {{ form.phone }} {{ form.phone.errors }}
-              </div>
-              {% endif %}
-
-              {% if form.time_work %}
-              <div class="form__group">
-                <label for="{{ form.time_work.id_for_label }}" class="form__controls-label">
-                  Режим работы :
-                </label>
-                {{ form.time_work }} {{ form.time_work.errors }}
-              </div>
-              {% endif %}
-
             </div>
-
-            {% if form.description %}
-            <div class="form__group">
-              <label for="{{ form.description.id_for_label }}" class="form__controls-label"> Полное описание : </label>
-              {{ form.description }} {{ form.description.errors }}
-            </div>
-            {% endif %}
-
-            {% if image_form %}
-            <div class="form__group form__group-image">
-              <label for="{{ image_form.src.id_for_label }}" class="form__controls-label"> Дополнительные изображения
-                : </label>
-              {{ image_form.src }} {{ image_form.src.errors }}
-            </div>
-            <div class="product-field"></div>
-            <div class="product-block__plus form__btn">Добавить изрбражение</div>
-            {% endif %}
           </div>
 
           <div class="page-content__col">
-            {% if form.slug %}
             <div class="form__group">
               <label for="{{ form.slug.id_for_label }}" class="form__controls-label">
                 <span>*</span>
@@ -181,33 +112,34 @@
               </label>
               {{ form.slug }} {{ form.slug.errors }}
             </div>
-            {% endif %}
             <div class="form__group">
               <label for="{{ form.category.id_for_label }}" class="form__controls-label">Выбор категории :</label>
               {{ form.category }} {{ form.category.errors }}
             </div>
-            <!--            <div class="form__group">-->
-            <!--              <label for="{{ form.categories.id_for_label }}" class="form__controls-label">Выбор категории :</label>-->
-            <!--              {{ form.categories }} {{ form.categories.errors }}-->
-            <!--            </div>-->
+            <div class="form__group">
+              <label for="{{ form.day.id_for_label }}" class="form__controls-label">Выбор дня недели:</label>
+              <select name="day" id="id-day" class="form__controls">
+                <option disabled selected class="form__controls-option">Выберите день</option>
+                <option value="0" class="form__controls-option" {% if form.day.value == 0 %}selected{% endif %}>
+                  Понедельник
+                </option>
+                <option value="1" class="form__controls-option" {% if form.day.value == 1 %}selected{% endif %}>Вторник
+                </option>
+                <option value="2" class="form__controls-option" {% if form.day.value == 2 %}selected{% endif %}>Среда
+                </option>
+                <option value="3" class="form__controls-option" {% if form.day.value == 3 %}selected{% endif %}>Четверг
+                </option>
+                <option value="4" class="form__controls-option" {% if form.day.value == 4 %}selected{% endif %}>Пятница
+                </option>
+              </select>
+            </div>
+            <div class="form__group">
+              <label for="{{ form.branch.id_for_label }}" class="form__controls-label">Выбор филиала:</label>
+              {{ form.branch }} {{ form.branch.errors }}
+            </div>
             <div class="form__group form__group-image">
               <label for="{{ form.image.id_for_label }}" class="form__controls-label">Выбор изображения товара :</label>
-              {{ form.image }} {{ form.image.errors }}
-            </div>
-            {% if form.instance.image %}
-            <a href="{{ form.instance.image.url }}" target="_blank">
-              <img src="{{ form.instance.image.url }}" alt="Миниатюра изображения"
-                   style="max-width: 100px; max-height: 100px"/>
-            </a>
-            {% endif %}
-            <div class="form__group-checkbox">
-              {{ form.latest }} {{ form.latest.errors }}
-              <label for="{{ form.latest.id_for_label }}" class="form__controls-label"> Новинка ? :</label>
-            </div>
-            <div class="form__group-checkbox">
-              {{ form.type_image }} {{ form.type_image.errors }}
-              <label for="{{ form.type_image.id_for_label }}" class="form__controls-label">Отображение картинки ?
-                : </label>
+              {{ form.image }} {{ form.image.errors }}{{ image_path }}
             </div>
 
             <div class="form__group-checkbox">

@@ -61,7 +61,7 @@ class ServiceProduct(models.Model):
       ("banquet", "Организация банкетов"),
       ("funeral", "Поминальные обеды"),
   ]
-  service_type = MultiSelectField(choices=TEMPLATE_CHOICES,max_choices=2,max_length=100,default=[],verbose_name="Шаблон")
+  service_type = models.CharField(max_length=50, choices=TEMPLATE_CHOICES, default="default", verbose_name="Услуга" )
   name = models.CharField(max_length=250, null=True, blank=True, verbose_name="Название товара")
   image = models.ImageField(upload_to="service-product", blank=True, null=True, verbose_name="Изображение товара")
   price = models.CharField(max_length=250, null=True, blank=True, verbose_name="Цена")

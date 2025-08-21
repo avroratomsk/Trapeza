@@ -19,10 +19,12 @@
 @import "./includes/_single-banner";
 
 @import "global";
+@import "_branches";
 @import "./pages/home";
 @import "./pages/about";
 @import "./pages/post";
 @import "./pages/_service";
+@import "./pages/_service_detail";
 @import "./pages/_category";
 @import "./catalog/product";
 @import "./catalog/category-details";
@@ -46,5 +48,7 @@
 @import "./components/form";
 @import "./components/search-result";
 @import "./components/_pagging";
+@import "./components/_day-single";
+@import "./components/_search-filter";
 
 @import "./users/login";

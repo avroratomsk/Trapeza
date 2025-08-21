@@ -224,82 +224,46 @@ def robots(request):
 
   return render(request, "settings/robots.html", context)
 
+@user_passes_test(lambda u: u.is_superuser)
 def admin_product(request):
   """
   View, которая возвращаяет и отрисовывает все товары на странице
   и разбивает их на пагинацию
   """
   page = request.GET.get('page', 1)
-  products = Product.objects.all()
-  paginator = Paginator(products, 20)
+  category = Category.objects.all().order_by('id')
+  # products = Product.objects.all().exclude(funeral_menu=True)
+  products = Product.objects.all().order_by('id')
+  paginator = Paginator(products, 10)
   current_page = paginator.page(int(page))
-
   context = {
+    "categorys": category,
     "items": current_page
   }
   return render(request, "shop/product/product.html", context)
 
+@user_passes_test(lambda u: u.is_superuser)
 def product_edit(request, pk):
   """
     View, которая получает данные из формы редактирования товара
     и изменяет данные внесенные данные товара в базе данных
   """
   product = Product.objects.get(id=pk)
-  product_image = ProductImage.objects.filter(parent=product)
-  all_chars = Properties.objects.filter(parent=product)
-  properties_form = ProductPropertiesForm()
-
   form = ProductForm(instance=product)
 
   form_new = ProductForm(request.POST, request.FILES, instance=product)
-
   if request.method == 'POST':
-      if form_new.is_valid():
-          form_new.save()
-          product = Product.objects.get(id=pk)
-
-          # Добавление новых характеристик
-          prop_names = request.POST.getlist('new_name')
-          prop_values = request.POST.getlist('new_value')
-
-          for i in range(min(len(prop_names), len(prop_values))):
-            Properties.objects.create(
-                name=prop_names[i].strip(),
-                value=prop_values[i].strip(),
-                parent=product
-            )
-
-          # Обновление старых характеристик
-          old_ids = request.POST.getlist('old_id')
-          old_names = request.POST.getlist('old_name')
-          old_values = request.POST.getlist('old_value')
-
-          for i in range(min(len(old_ids), len(old_names), len(old_values))):
-              prop = Properties.objects.get(id=old_ids[i])
-              prop.name = old_names[i]
-              prop.value = old_values[i]
-              prop.save()
-
-
-          images = request.FILES.getlist('src')
-
-          for image in images:
-              img = ProductImage(parent=product, src=image)
-              img.save()
-
-          return redirect(request.META.get('HTTP_REFERER'))
-      else:
-          return render(request, 'common-template/template-edit-add-page.html', {'form': form_new})
+    if form_new.is_valid():
+      form_new.save()
+      return redirect('admin_product')
+    else:
+      return render(request, 'common-template/template-edit-add-page.html', {'form': form_new})
   context = {
-    "form":form,
-    "all_chars": all_chars,
-    "title": "Страница редактирования",
-    "url": general_url_product,
-    "properties_form":properties_form,
-    "product_image": product_image,
+    "form":form
   }
-  return render(request, "common-template/template-edit-add-page.html", context)
+  return render(request, 'common-template/template-edit-add-page.html', context)
 
+@user_passes_test(lambda u: u.is_superuser)
 def product_add(request):
   form = ProductForm()
 
@@ -309,16 +273,15 @@ def product_add(request):
       form_new.save()
       return redirect('admin_product')
     else:
-      return render(request, "common-template/template-edit-add-page.html", {"form": form_new})
+      return render(request, 'common-template/template-edit-add-page.html', {'form': form_new})
 
   context = {
-   "title": "Страница добавление",
-   "url": general_url_product,
-   "form": form
+    "form": form
   }
 
-  return render(request, 'common-template/template-edit-add-page.html', context)
+  return render(request, 'common-template/template-edit-add-page.html',context)
 
+@user_passes_test(lambda u: u.is_superuser)
 def product_delete(request,pk):
   product = Product.objects.get(id=pk)
   product.delete()
@@ -609,14 +572,16 @@ from pytils.translit import slugify
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 
+@user_passes_test(lambda u: u.is_superuser)
 def admin_category(request):
-  categorys = Category.objects.filter(parent__isnull=True)
-  
+  categories = Category.objects.all().order_by('id')
+
   context ={
-    "items": categorys,
+    "items": categories,
   }
   return render(request, "shop/category/category.html", context)
 
+@user_passes_test(lambda u: u.is_superuser)
 def category_add(request):
   form = CategoryForm()
   if request.method == "POST":
@@ -626,32 +591,31 @@ def category_add(request):
       return redirect("admin_category")
     else:
       return render(request, "shop/category/category_add.html", {"form": form_new})
-    
+
   context = {
     "form": form
   }
   return render(request, "shop/category/category_add.html", context)
 
+@user_passes_test(lambda u: u.is_superuser)
 def category_edit(request, pk):
-  category = Category.objects.get(id=pk)
-
-  form = CategoryForm(request.POST, request.FILES, instance=category)
-  
+  categories = Category.objects.get(id=pk)
   if request.method == "POST":
-    
+    form = CategoryForm(request.POST, request.FILES, instance=categories)
     if form.is_valid():
       form.save()
       return redirect("admin_category")
     else:
-      return render(request, "shop/category/category_edit.html", {"form": form, 'image_path': image_path})
-  
+      return render(request, "shop/category/category_edit.html", {"form": form})
+
   context = {
-    "form": CategoryForm(instance=category),
-    "categorys": category
+    "form": CategoryForm(instance=categories),
+    "items": categories
   }
 
   return render(request, "shop/category/category_edit.html", context)
 
+@user_passes_test(lambda u: u.is_superuser)
 def category_delete(request, pk):
   category = Category.objects.get(id=pk)
   category.delete()
@@ -1347,3 +1311,63 @@ def news_delete(request, pk):
   news.delete()
 
   return redirect('admin_news')
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_fillial(request):
+  fillials = Branch.objects.all().order_by('id')
+
+  context = {
+    "items": fillials
+  }
+
+  return render(request, "fillials/fillial.html", context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def fillial_edit(request, pk):
+  fillial = Branch.objects.get(id=pk)
+  form = FillialForm(instance=fillial)
+
+  if request.method == "POST":
+    form_new = FillialForm(request.POST, request.FILES, instance=fillial)
+    if form_new.is_valid():
+      form_new.save()
+      return redirect("admin_fillial")
+    else:
+      return render(request, "fillials/fillial_edit.html", {"form": form_new})
+
+  context = {
+    "form": form,
+  }
+
+  return render(request, "fillials/fillial_edit.html", context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def fillial_add(request):
+  form = FillialForm()
+  if request.method == "POST":
+    form_new = FillialForm(request.POST, request.FILES)
+    if form_new.is_valid():
+      form_new.save()
+      return redirect("admin_fillial")
+    else:
+      return render(request, "fillials/fillial_add.html", {"form": form_new})
+
+  context = {
+    "form": form
+  }
+
+  return render(request, "fillials/fillial_add.html", context)
+
+def delete_item(modelName, redirectUrl, idItem):
+  item = modelName.objects.get(id=idItem)
+  item.delete()
+
+  return redirect(redirectUrl)
+
+def fillial_delete(request, pk):
+  return delete_item(Branch, 'admin_fillial', pk)
+#    item = Branch.objects.get(id=pk)
+#    item.delete()
+#
+#    return redirect('admin_fillial')

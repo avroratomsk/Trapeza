@@ -5,39 +5,95 @@ from admin.singleton_model import SingletonModel
 
 class BaseSettings(SingletonModel):
   logo  = models.ImageField(upload_to="base-settings", blank=True, null=True, verbose_name="Логотип")
-  phone = models.CharField(max_length=50, blank=True, null=True, db_index=True, verbose_name="Номер телефона")
-  time_work = models.CharField(max_length=250, blank=True, null=True, db_index=True, verbose_name="Время работы")
   email = models.EmailField(max_length=250, blank=True, null=True, db_index=True, verbose_name="Email")
-  address = models.CharField(max_length=250, blank=True, null=True, verbose_name="Адрес")
   meta_h1 = models.CharField(max_length=350, null=True, blank=True, verbose_name="Заголовок первого уровня")
+  phone_whatsapp = models.CharField(max_length=350, null=True, blank=True, verbose_name="WhatsApp")
+  vk = models.CharField(max_length=350, null=True, blank=True, verbose_name="VK")
+  telegram = models.CharField(max_length=350, null=True, blank=True, verbose_name="Telegram")
+  viber = models.CharField(max_length=350, null=True, blank=True, verbose_name="viber")
+  instagram = models.CharField(max_length=350, null=True, blank=True, verbose_name="Instagram")
   meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
   meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
-  favicon = models.FileField(upload_to='base-settings/', blank=True, null=True, verbose_name="ФавИконка")
-  
 
 class HomeTemplate(SingletonModel):
-  banner = models.ImageField(upload_to="home-page", blank=True, null=True, verbose_name="Главная страница первый блок картинка")
-  untitle = models.CharField(max_length=50, blank=True, null=True, db_index=True, verbose_name="Надзаголовок")
-  title = models.CharField(max_length=50, blank=True, null=True, db_index=True, verbose_name="Заголовок")
-
-  title_why = models.CharField(max_length=50, default="Почему мы ?", blank=True, null=True, db_index=True, verbose_name="Заголовок")
-  left_text = models.TextField(null=True, blank=True, verbose_name="Левая колонка с текстом")
-  right_text = models.TextField(null=True, blank=True, verbose_name="Правая колонка с текстом")
-
+  banner = models.ImageField(upload_to="home-page", blank=True, null=True, verbose_name="Картинка главной страницы")
+  untitle = models.CharField(max_length=250, blank=True, null=True, verbose_name="Надзаголовок")
+  left_text = models.TextField(null=True, blank=True, verbose_name="О нас левый текст")
+  right_text = models.TextField(null=True, blank=True, verbose_name="О нас правый текст")
   meta_h1 = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок первого уровня")
   meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
   meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
-
+  about_text = models.TextField(null=True, blank=True, verbose_name="О компании")
+  about_image = models.ImageField(upload_to="home-page", null=True, blank=True, verbose_name="О компании картинка")
   callback_image = models.ImageField(upload_to="home-page", null=True, blank=True, verbose_name="CallBack картинка")
-  callback_title = models.CharField(max_length=250, null=True, blank=True, default="Напишите нам !", verbose_name="Заголовок Callback")
-  callback_text = models.CharField(max_length=250, null=True, blank=True, verbose_name="CallBack текст")
+  callback_text = models.TextField(null=True, blank=True, verbose_name="CallBack текст")
+
+class StockSettings(models.Model):
+  meta_h1 = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок первого уровня")
+  meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
+  meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
+  meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
+  image = models.ImageField(upload_to="blog", blank=True, null=True, verbose_name="Изображение баннера")
+  text = models.TextField(null=True, blank=True, verbose_name="Текст на странице")
+
+class Stock(models.Model):
+  title = models.CharField(max_length=250, blank=True, null=True, verbose_name="Название акции")
+  description = models.TextField(blank=True, null=True, verbose_name="Описание акции")
+  validity = models.DateTimeField(blank=True, null=True, help_text="После окончания акции, она перейдет в состояние не активна", verbose_name="Срок дейстия акции")
+  status = models.BooleanField(default=True, verbose_name="Статус публикации")
+  image = models.ImageField(upload_to="stock", null=True, blank=True, verbose_name="Фотография акции")
+  slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name="URL")
+  meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
+  meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
+  meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
+
+  def get_absolute_url(self):
+      return reverse("stock_detail", kwargs={"slug": self.slug})
 
 class WhyWeItems(models.Model):
   icon = models.ImageField(upload_to="home-page", blank=True, null=True,  verbose_name="Иконка")
   title = models.CharField(max_length=50, blank=True, null=True, db_index=True, verbose_name="Заголовок")
 
+class Gallery(models.Model):
+  image = models.ImageField(upload_to="gallery", null=True, blank=True, verbose_name="Фотография товара")
+  alt = models.CharField(max_length=250, blank=True, null=True, verbose_name="Альтернативный текст")
+  status = models.BooleanField(default=True, verbose_name="Статус публикации ?")
+
+class GallerySettings(SingletonModel):
+  banner = models.ImageField(upload_to="about-page", blank=True, null=True, verbose_name="Баннер")
+  meta_h1 = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок первого уровня")
+  meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
+  meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
+  meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
+  gallery_text = models.TextField(null=True, blank=True, verbose_name="Текс на странице")
+
+class AboutTemplate(SingletonModel):
+  banner = models.ImageField(upload_to="about-page", blank=True, null=True, verbose_name="Баннер")
+  meta_h1 = models.CharField(max_length=250, blank=True, null=True, verbose_name="Заголовок первого уровня")
+  meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
+  meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
+  meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
+  about_text = models.TextField(null=True, blank=True, verbose_name="О компании")
+  about_image = models.ImageField(upload_to="home-page", null=True, blank=True, verbose_name="О компании картинка")
+
+class VacancySettings(SingletonModel):
+  meta_h1 = models.CharField(max_length=350, null=True, blank=True, verbose_name="Заголовок первого уровня")
+  meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="META заголовок")
+  meta_description = models.TextField(null=True, blank=True, verbose_name="META описание")
+  meta_keywords = models.TextField(null=True, blank=True, verbose_name="META keywords")
+
+class Vacancy(models.Model):
+  name = models.CharField(max_length=150, db_index=True, verbose_name="Наименование")
+  slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name="URL")
+  description = models.TextField(blank=True, null=True, verbose_name="Описание")
+  price = models.CharField(max_length=150, db_index=True, blank=True, null=True, verbose_name="Зарплата")
+  status = models.BooleanField(default=True, verbose_name="Статус публикации")
+  meta_h1 = models.CharField(max_length=350, null=True, blank=True, verbose_name="Заголовок первого уровня")
+  meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
+  meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
+  meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
 
 class ContactTemplate(SingletonModel):
   activate_page = models.BooleanField(default=False, verbose_name="Включить страницу")
@@ -47,85 +103,8 @@ class ContactTemplate(SingletonModel):
   meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
 
-
-  
-class Stock(models.Model):
-  """Model"""
-  title = models.CharField(max_length=250, blank=True, null=True, verbose_name="Название акции")
-  description = models.TextField(blank=True, null=True, verbose_name="Описание акции")
-  validity = models.DateTimeField(blank=True, null=True, help_text="После окончания акции, она перейдет в состояние не активна", verbose_name="Срок дейстия акции")
-  status = models.BooleanField(default=True, verbose_name="Статус публикации")
-  image = models.ImageField(upload_to="stock", null=True, blank=True, verbose_name="ФОтография акции")
-  slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name="URL")
-  meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
-  meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
-  meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
-  slider_status = models.BooleanField(default=False, verbose_name="Слайдер на главной")
-
-  def get_absolute_url(self):
-      return reverse("stock_detail", kwargs={"slug": self.slug})
-    
-class GalleryCategory(models.Model):
-  name = models.CharField(max_length=250, null=True, blank=True, verbose_name="Наименование")
-  meta_h1 = models.CharField(max_length=350, null=True, blank=True, verbose_name="Заголовок первого уровня")
-  meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
-  meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
-  meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
-  slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name="")
-  home_view = models.BooleanField(default=False, verbose_name="Отображать на главной ?")
-  image = models.ImageField(upload_to="gallery-category", null=True, blank=True, verbose_name="Фотография категории")
-  
-  def __str__(self):
-    return self.name
-  
-  def get_absolute_url(self):
-    return reverse("gal_cat_detail", kwargs={"slug": self.slug})
-  
-class Gallery(models.Model):
-  image = models.ImageField(upload_to="gallery-image", null=True, blank=True, verbose_name="Фотография")
-  name = models.CharField(max_length=255, null=True, blank=True, verbose_name="Наименование пойдет в alt и title")
-  is_active = models.BooleanField(default=True, verbose_name="Выводить на сайт ?")
-  
-  def __str__(self):
-    return self.name
-
-class Works(models.Model):
-  image = models.ImageField(upload_to="gallery-image", null=True, blank=True, verbose_name="Фотография")
-  name = models.CharField(max_length=255, null=True, blank=True, verbose_name="Название")
-  text = models.TextField( null=True, blank=True, verbose_name="Минимальный текст")
-  is_active = models.BooleanField(default=True, verbose_name="Выводить на сайт ?")
-
 class RobotsTxt(models.Model):
   content = models.TextField(default="User-agent: *\nDisallow: /admin/")
-    
+
   def __str__(self):
     return "robots.txt"
-
-class About(models.Model):
-  description = models.TextField(blank=True, null=True, verbose_name="Первый текст")
-  description_two = models.TextField(blank=True, null=True, verbose_name="Второй текст")
-  image = models.ImageField(upload_to="about", null=True, blank=True, verbose_name="Изображение")
-  meta_h1 = models.CharField(max_length=350, null=True, blank=True, verbose_name="Заголовок первого уровня")
-  meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
-  meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
-  meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
-
-class Production(models.Model):
-  meta_h1 = models.CharField(max_length=350, null=True, blank=True, verbose_name="Заголовок первого уровня")
-  meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
-  meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
-  meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
-
-class Delivery(models.Model):
-  description = models.TextField(blank=True, null=True, verbose_name="Текст на странице")
-  description_two = models.TextField(blank=True, null=True, verbose_name="Второй текст на странице")
-  meta_h1 = models.CharField(max_length=350, null=True, blank=True, verbose_name="Заголовок первого уровня")
-  meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
-  meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
-  meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
-
-class SalesOffices(models.Model):
-  name = models.CharField(max_length=250, null=True, blank=True, verbose_name="Наименование", default="Офис продаж Максимум")
-  address = models.CharField(max_length=250, null=True, blank=True, verbose_name="Адрес")
-  phone = models.CharField(max_length=250, null=True, blank=True, verbose_name="Номер телефона")
-  time_work = models.CharField(max_length=250, null=True, blank=True, verbose_name="Режим работы", default="Вт-сб 09:00-18:00, Вс-пн выходной")
