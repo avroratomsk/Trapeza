@@ -649,15 +649,35 @@ def admin_home(request):
   
   return render(request, "static/home_page.html", context)
 
+@user_passes_test(lambda u: u.is_superuser)
+def stock_settings(request):
+  try:
+    stock_set = StockSettings.objects.get()
+    items = Stock.objects.all()
+  except:
+    stock_set = StockSettings()
+    items = Stock()
+    stock_set.save()
 
-def admin_stock(request):
-  stocks = Stock.objects.all()
+  if request.method == "POST":
+    form_new = StockPage(request.POST, request.FILES, instance=stock_set)
+    if form_new.is_valid():
+      form_new.save()
+      return redirect("stock_settings")
+    else:
+      return render(request, "stock/stock_settings.html", {"form": form_new})
+
+  stock_set = StockSettings.objects.get()
+
+  form = StockPage(instance=stock_set)
 
   context = {
-    "stocks": stocks
+    "form": form,
+    "items": items,
+    "stock_set": stock_set
   }
 
-  return render(request, "stock/stock.html", context)
+  return render(request, "stock/stock_settings.html", context)
 
 def stock_add(request):
   form = StockForm()
@@ -666,7 +686,8 @@ def stock_add(request):
     form_new = StockForm(request.POST, request.FILES)
     if form_new.is_valid():
       form_new.save()
-      return redirect("admin_stock")
+      url = reverse("stock_settings") + "?tab=list"
+      return redirect(url)
     else: 
       return render(request, "stock/stock_add.html", {"form": form_new})
   
@@ -682,8 +703,8 @@ def stock_edit(request, pk):
   if request.method == "POST":
     form_new = StockForm(request.POST, request.FILES, instance=stock)
     if form_new.is_valid():
-      form_new.save()
-      return redirect("admin_stock")
+      url = reverse("stock_settings") + "?tab=list"
+      return redirect(url)
     else:
       return render(request, "stock/stock_edit.html", {"form": form_new})
   
@@ -696,7 +717,8 @@ def stock_edit(request, pk):
 def stock_delete(request, pk):
   stock = Stock.objects.get(id=pk)
   stock.delete()
-  return redirect("admin_stock")
+  url = reverse("stock_settings") + "?tab=list"
+  return redirect(url)
 
 def admin_service_page(request):
   try:

@@ -476,8 +476,30 @@ class AboutTemplateForm(forms.ModelForm):
      )
   }
            
+class StockPage(forms.ModelForm):
+  class Meta:
+    model = StockSettings
+    fields = "__all__"
 
-    
+    widgets = {
+        'text': CKEditor5Widget(
+           attrs={'class': 'django_ckeditor_5'},
+           config_name='extends'
+        ),
+        'meta_h1': forms.TextInput(attrs={
+            'class': 'form__controls',
+        }),
+        'meta_title': forms.TextInput(attrs={
+            'class': 'form__controls',
+        }),
+        'meta_description': forms.TextInput(attrs={
+            'class': 'form__controls',
+        }),
+        'meta_keywords': forms.TextInput(attrs={
+            'class': 'form__controls',
+        })
+    }
+
 class StockForm(forms.ModelForm):
   """ Form, добавление и редактирование акций"""
   # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
@@ -497,15 +519,18 @@ class StockForm(forms.ModelForm):
       'validity': forms.DateInput(attrs={
         'class':INPUT_CLASS,
       }),
-      'description': forms.Textarea(attrs={
-        'class': INPUT_CLASS,
-        'rows': 5,
-      }),
+      'description': CKEditor5Widget(
+        attrs={'class': 'django_ckeditor_5'},
+        config_name='extends'
+      ),
       'status': forms.CheckboxInput(attrs={
         'class': 'form__controls-checkbox',
       }),
       'slider_status': forms.CheckboxInput(attrs={
         'class': 'form__controls-checkbox',
+      }),
+      'meta_h1': forms.TextInput(attrs={
+        'class': INPUT_CLASS,
       }),
       'meta_title': forms.TextInput(attrs={
         'class': INPUT_CLASS,

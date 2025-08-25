@@ -33,13 +33,7 @@ urlpatterns = [
     path('admin-reviews/add/', admin.admin_reviews_add, name='admin_reviews_add'),
     path('admin-reviews/edit/<int:pk>/', admin.admin_reviews_edit, name='admin_reviews_edit'),
     path('admin_reviews/delete/<int:pk>/', admin.admin_reviews_delete, name='admin_reviews_delete'),
-    
-    #URl - отвечающие за отображение акций, редактирование и удаление акций
-    path('stock/', views.admin_stock, name='admin_stock'),
-    path('stock/add/', views.stock_add, name='stock_add'),
-    path('stock/edit/<int:pk>/', views.stock_edit, name='stock_edit'),
-    path('stock/delete/<int:pk>/', views.stock_delete, name='stock_delete'),
-    
+
     #URl - отвечающие за отображение услуг, редактирование и удаление услуг
     path('service-page/', views.admin_service_page, name='admin_service_page'),
     path('serv/add/', views.service_add, name='service_add'),
@@ -121,5 +115,11 @@ urlpatterns = [
     path('fillial/add/', views.fillial_add, name='fillial_add'),
     path('fillial/edit/<int:pk>/', views.fillial_edit, name='fillial_edit'),
     path('fillial/delete/<int:pk>/', views.fillial_delete, name='fillial_delete'),
+
+    #URl - отвечающие за отображение акций, редактирование и удаление акций
+    path('stock-settings/', views.stock_settings, name='stock_settings'),
+    path('stock/add/', views.stock_add, name='stock_add'),
+    path('stock/edit/<int:pk>/', views.stock_edit, name='stock_edit'),
+    path('stock/delete/<int:pk>/', views.stock_delete, name='stock_delete'),
 
 ]

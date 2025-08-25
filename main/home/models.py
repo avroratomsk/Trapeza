@@ -35,7 +35,7 @@ class StockSettings(models.Model):
   meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
   meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
-  image = models.ImageField(upload_to="blog", blank=True, null=True, verbose_name="Изображение баннера")
+  image = models.ImageField(upload_to="stock", blank=True, null=True, verbose_name="Изображение баннера")
   text = models.TextField(null=True, blank=True, verbose_name="Текст на странице")
 
 class Stock(models.Model):
@@ -45,6 +45,7 @@ class Stock(models.Model):
   status = models.BooleanField(default=True, verbose_name="Статус публикации")
   image = models.ImageField(upload_to="stock", null=True, blank=True, verbose_name="Фотография акции")
   slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name="URL")
+  meta_h1 = models.CharField(max_length=350, null=True, blank=True, verbose_name="Заголовок H1")
   meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="Мета заголовок")
   meta_description = models.TextField(null=True, blank=True, verbose_name="Meta описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="Meta keywords")
