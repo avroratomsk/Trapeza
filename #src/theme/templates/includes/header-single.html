@@ -1,0 +1,81 @@
+<header class="header">
+  <div class="header__under">
+    <div class="container-under">
+      <a href="tel:{{ settings.phone_one }}" class="header__under-phone">{{ settings.phone_one }}</a>
+      {% csrf_token %}
+      <select name="fillal" id="branch-select" class="header__under-select">
+        <option value="23">{{ site_settings.address_one }}</option>
+        <option value="24">{{ site_settings.address_two }}</option>
+      </select>
+    </div>
+  </div>
+  <div class="header__top top-header">
+    {{ branchs.phone }}
+    <div class="container">
+      <div class="top-header__inner">
+        <a href="/" class="top-header__logo">
+          {% if settings.logo %}
+          <img src="{{ settings.logo.url }}" alt="{{ settings.phone_one }}" />
+          {% else %} Logo {% endif %}
+        </a>
+        <div class="top-header__nav nav">
+          <a href="/" class="top-header__logo logo-mb">
+            {% if site_settings.logo %}
+            <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.phone_one }}" />
+            {% else %} Logo {% endif %}
+          </a>
+          <ul class="nav__list">
+            <li class="nav__item">
+              <a href="{% url 'category' %}" class="nav__link">Виды меню</a>
+              <button type="button" class="nav__submenu-btn">
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+              {% if cat %}
+              <ul class="submenu">
+                {% for category in cat %}
+                <li class="submenu__item"><a href="{{ category.get_absolute_url }}" class="submenu__link"> {{ category.name }}</a></li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </li>
+            <li class="nav__item">
+              <a href="{% url 'service' %}" class="nav__link">Услуги</a>
+              <button type="button" class="nav__submenu-btn">
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+              {% if services %}
+              <ul class="submenu">
+                {% for service in services %}
+                <li class="submenu__item"><a href="{{ service.get_absolute_url }}" class="submenu__link"> {{ service.name }}</a></li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+            </li>
+            <li class="nav__item">
+              <a href="{% url 'about' %}" class="nav__link">О нас</a>
+              <button type="button" class="nav__submenu-btn">
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+              <ul class="submenu">
+                <li class="submenu__item"><a href="{% url 'stock' %}" class="submenu__link">Акции</a></li>
+                <li class="submenu__item"><a href="{% url 'news' %}" class="submenu__link">Новости</a></li>
+                <li class="submenu__item"><a href="{% url 'blog' %}" class="submenu__link">Статьи</a></li>
+              </ul>
+            </li>
+            <li class="nav__item"><a href="{% url 'vacancies' %}" class="nav__link">Вакансии</a></li>
+            <li class="nav__item"><a href="{% url 'reviews' %}" class="nav__link">Отзывы</a></li>
+            <li class="nav__item"><a href="{% url 'gallery' %}" class="nav__link">Галерея</a></li>
+            <li class="nav__item"><a href="{% url 'contact' %}" class="nav__link">Контакты</a></li>
+          </ul>
+        </div>
+        <div class="top-header__actions">
+          <a href="tel:{{ settings.phone_one }}" class="top-header__actions-phone" id="header-phone">
+
+          </a>
+          <button type="button" data-popup="popup-callback">Связаться с нами</button>
+        </div>
+        <button type="button" class="top__header-burger burger" id="burger"><span></span></button>
+      </div>
+    </div>
+  </div>
+</header>
