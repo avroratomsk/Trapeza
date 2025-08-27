@@ -1,53 +1,114 @@
 {% extends 'base.html' %}
-{% load static %}
-{% load carts_tag %}
-{% load thumbnail %}
 {% block title %}{{ about_page.meta_title }}{% endblock %}
 {% block description %}{{ about_page.meta_description }}{% endblock %}
 {% block keywords %}{{ about_page.meta_keywords }}{% endblock %}
+{% load static %} {% load shop_tags %} {% load thumbnail %} {% block content %}
 
-{% block content %}
 <main class="page">
+  <div class="single-banner" data-speed="70">
+    {% if about_page.banner %}
+    {% thumbnail about_page.banner "1920x830" format="WEBP" crop="center" as im %}
+    <img src="{{ im.url }}"
+         alt="{{ about_page.title }}"
+         title="{{ about_page.title }}"
+         class="single-banner__image _bgImage"
+    >
+    {% endthumbnail %}
+    {% endif %}
+
+    <div class="container">
+      <div class="single-banner__inner">
+        <h1 class="stock__title _title">{% if about_page.meta_h1 %}{{ about_page.meta_h1 }}{% else %} О нас {% endif %}</h1>
+        <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+          <a href="/" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+             class="breadcrumbs__item">
+            Главная
+            <meta itemprop="position" content="1"/>
+          </a>
+          <span itemprop="name" class="breadcrumbs__item">
+            О нас
+            <meta itemprop="position" content="2"/>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <section class="about">
     <div class="container">
-      <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
-        <a href="{% url 'home' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
-           class="breadcrumbs__item">
-          Главная
-          <meta itemprop="position" content="1"/>
-        </a>
-        <a href="{% url 'about' %}" itemprop="itemListElement" itemscope=""
-           itemtype="http://schema.org/ListItem" class="breadcrumbs__item">
-          О компании
-          <meta itemprop="position" content="2"/>
-        </a>
-      </div>
-      <div class="page-top">
-        <div class="page-text">
-          {% if about_page.meta_h1 %}<h1>{{ about_page.meta_h1 }}</h1>{% endif %}
-          {{ about_page.description|safe }}
+      <div class="about__inner">
+        <div class="link-bar">
+          <a href="{% url 'stock' %}" class="link-bar__link">Акции</a>
+          <a href="{% url 'news' %}" class="link-bar__link">Новости</a>
+          <a href="{% url 'blog' %}" class="link-bar__link">Статьи</a>
+          <a href="{% url 'gallery' %}" class="link-bar__link">Галлерея</a>
+          <!-- <a href="#" class="link-bar__link">Политика конфиденциальности</a> -->
         </div>
-        <div class="page-nav">
-          <ul>
-            <li class="active"><a href="{% url 'about' %}">О компании</a></li>
-            <li><a href="{% url 'delivery' %}">Доставка и оплата</a></li>
-            <li><a href="{% url 'blog' %}">Новости</a></li>
-            <li><a href="{% url 'works' %}">Наши работы</a></li>
-          </ul>
+        <div class="about__content">
+          <div class="text">{{ about_page.about_text|safe }}</div>
         </div>
-      </div>
-
-    </div>
-    <div class="image-full-screen" style="background-image: url({% if about_page.image %}{{ about_page.image.url }}{% else %}{% static 'theme/img/slider-3.jpeg' %}{% endif %})"></div>
-    <div class="container">
-      <div class="page-text">
-        {{ about_page.description_two|safe }}
       </div>
     </div>
   </section>
 
-  {% if reviews %}
-  {% include "../includes/_reviews.html" %}
-  {% endif %}
+  <section class="about_hall hall">
+    <div class="container">
+      <h2 class="hall__title _title">Информация о наших залах</h2>
+      {% if branchs %} {% for branch in branchs %}
+      <div class="hall__row">
+        <div class="hall__col">
+          <div class="hall__image">
+            <img src="{{ branch.image.url }}" alt="{{ branch.name }}" title="{{ branch.name }}"/>
+          </div>
+        </div>
+        <div class="hall__col">
+          <div class="hall__info">
+            <div class="hall__item">
+              <p class="hall__label"><b>Адрес: </b> {{ branch.address_fillial }}</p>
+              <p class="hall__label"><b>Номер телефона:</b> <a href="tel:+79999999999">{{ branch.phone }}</a></p>
+              <p class="hall__label"><b>Количество мест:</b> {{ branch.number_seats }}</p>
+              <p class="hall__label"><b>Схема оплаты:</b> {{ branch.scheme_payment }}</p>
+              <p class="hall__label"><b>Аренда зала:</b> {{ branch.hall_rental }}</p>
+              <p class="hall__label"><b>Аренда зала в праздники:</b> {{ branch.hall_rental_hollyday }}</p>
+              <p class="hall__text">
+                Если у вас есть вопросы по бронированию <a href="{{ branch.phone }}">звоните</a>, пишите на <a
+                href="#">whatsapp</a> или оставьте заявку по кнопке ниже
+              </p>
+              <button type="button" class="hall__btn _btn">Забронировать</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %} {% endif %}
+
+      <!-- <div class="hall__row">
+        <div class="hall__col">
+          <div class="hall__image">
+            <img src="{% static 'theme/mb/images/hall.jpg' %}" alt="">
+          </div>
+        </div>
+        <div class="hall__col">
+          <div class="hall__info">
+            <div class="hall__item">
+              <p class="hall__label"><b>Адрес: </b> Пролетарская 57а 1 этаж</p>
+              <p class="hall__label"><b>Номер телефона:</b> <a href="tel:+79999999999"></a></p>
+              <p class="hall__label"><b>Количество мест:</b> 50</p>
+              <p class="hall__label"><b>Схема оплаты:</b> 2000 руб/чел. </p>
+              <p class="hall__label"><b>Аренда зала:</b> от 5000 </p>
+              <p class="hall__label"><b>Аренда зала в праздники:</b> от 7000</p>
+              <p class="hall__text">
+                Если у вас есть вопросы по бронированию <a href="#">звоните</a>, пишите на <a href="#">whatsapp</a> или
+                оставьте заявку
+                по кнопке ниже
+              </p>
+              <button type="button" class="hall__btn _btn">Забронировать</button>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </section>
+
+  {% include "../includes/_contact.html" %}
 </main>
 {% endblock %}

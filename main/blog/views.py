@@ -1,54 +1,29 @@
 from django.shortcuts import render
 
-from blog.models import BlogSettings, Post, BlogCategory
+from blog.models import BlogSettings, Post
 
 def blog(request):
-  posts = Post.objects.all()
-  category = BlogCategory.objects.all()
-
+  articles = Post.objects.filter(status=True)
   try:
-    setup = BlogSettings.objects.get()
+    settings = BlogSettings.objects.get()
   except:
-    setup = BlogSettings()
-  
+    settings = BlogSettings()
   context = {
-    "posts": posts,
-    "categorys": category,
-    "setup_blog": setup
+    "articles": articles,
+    "settings": settings
   }
   return render(request, "pages/blog/blog.html", context)
 
-def category_post(request, category_slug):
-  category = BlogCategory.objects.get(slug=category_slug)
-  categorys = BlogCategory.objects.all()
-  post = Post.objects.filter(category=category)
+def blog_detail(request, slug):
+  pass
+
+def post(request, slug):
+  article = Post.objects.get(slug=slug)
+  articles = Post.objects.filter(status=True).exclude(slug=slug)
 
   context = {
-    "category": category,
-    "categorys": categorys,
-    "posts": post
+    "article": article,
+    "articles": articles,
   }
-  return render(request, "pages/blog/blog_category.html", context)
 
-def post(request, category_slug, slug):
-    post = Post.objects.get(slug=slug)
-    viewed_articles = request.session.get('viewed_articles', [])
-    
-    # Проверяем, просматривал ли пользователь эту статью ранее.
-    if slug not in viewed_articles:
-      # Увеличиваем счетчик просмотров, если статья просматривается впервые.
-      post.view_count += 1
-      post.save()
-
-      # Добавляем идентификатор статьи в список просмотренных.
-      viewed_articles.append(slug)
-
-      # Обновляем сессию, сохраняя в ней обновленный список.
-      request.session['viewed_articles'] = viewed_articles
-
-
-    context = {
-        "post": post,
-    }
-
-    return render(request, "pages/blog/blog_detail.html", context)
+  return render(request, "pages/blog/blog_detail.html", context)

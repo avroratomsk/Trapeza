@@ -92,7 +92,6 @@ urlpatterns = [
     
     #URl - отвечающие за отображение категории Страниц блога, редактирование и удаление категории
     path('blog-settings/', views.blog_settings, name='blog_settings'),
-    path('article/', views.article, name='article'),
     path('article/add/', views.article_add, name='article_add'),
     path('article/edit/<int:pk>/', views.article_edit, name='article_edit'),
     path('article/delete/<int:pk>/', views.article_delete, name='article_delete'),
@@ -121,5 +120,18 @@ urlpatterns = [
     path('stock/add/', views.stock_add, name='stock_add'),
     path('stock/edit/<int:pk>/', views.stock_edit, name='stock_edit'),
     path('stock/delete/<int:pk>/', views.stock_delete, name='stock_delete'),
+
+    # Вакансии
+    path('vacancy/', views.admin_vacancy, name='admin_vacancy'),
+    path('vacancys/', views.vacancys, name='vacancys'),
+    path('vacancys/add/', views.vacancy_add, name='vacancy_add'),
+    path('vacancys/edit/<int:pk>', views.vacancy_edit, name='vacancy_edit'),
+    path('vacancys/delete/<int:pk>', views.vacancy_delete, name='vacancy_delete'),
+
+    #URl - отвечающие за отображение отзывов, редактирование и удаление отзывов
+    path('admin-reviews/', views.admin_reviews, name='admin_reviews'),
+    path('admin-reviews/add/', views.admin_reviews_add, name='admin_reviews_add'),
+    path('admin-reviews/edit/<int:pk>/', views.admin_reviews_edit, name='admin_reviews_edit'),
+    # path('admin_reviews/delete/<int:pk>/', views.admin_reviews_delete, name='admin_reviews_delete'),
 
 ]

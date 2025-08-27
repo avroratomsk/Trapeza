@@ -80,10 +80,12 @@ class AboutTemplate(SingletonModel):
   about_image = models.ImageField(upload_to="home-page", null=True, blank=True, verbose_name="О компании картинка")
 
 class VacancySettings(SingletonModel):
+  image = models.ImageField(upload_to="vacancy", null=True, blank=True, verbose_name="Фоновая картинка")
   meta_h1 = models.CharField(max_length=350, null=True, blank=True, verbose_name="Заголовок первого уровня")
   meta_title = models.CharField(max_length=350, null=True, blank=True, verbose_name="META заголовок")
   meta_description = models.TextField(null=True, blank=True, verbose_name="META описание")
   meta_keywords = models.TextField(null=True, blank=True, verbose_name="META keywords")
+
 
 class Vacancy(models.Model):
   name = models.CharField(max_length=150, db_index=True, verbose_name="Наименование")

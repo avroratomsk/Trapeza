@@ -5,11 +5,11 @@
       <h1 class="page__title">Добавление статьи</h1>
       <ul class="admin-breadcrumbs">
         <li><a href="{% url 'admin' %}">Панель управления</a></li>
-        <li><a href="{% url 'article' %}">Статьи</a></li>
+        <li><a href="{% url 'blog_settings' %}">Статьи</a></li>
         <li>Настройки статьи</li>
       </ul>
     </div>
-    <form action="." method="POST" class="form" enctype="multipart/form-data">
+    <form action="blog_post" method="POST" class="form" enctype="multipart/form-data">
       <div class="page__head">
         <div class="page__head-tab">
           <button type="button" data-name="basic" class="page__head-btn _active">Основные</button>
@@ -30,8 +30,8 @@
               {{ form.name }} {{ form.name.errors }}
             </div>
             <div class="form__group">
-              <label for="{{ form.description.id_for_label }}" class="form__controls-label">Контент стратьи : </label>
-              {{ form.description }} {{ form.description.errors }}
+              <label for="{{ form.text.id_for_label }}" class="form__controls-label">Контент стратьи : </label>
+              {{ form.text }} {{ form.text.errors }}
             </div>
           </div>
           <div class="page-content__col">

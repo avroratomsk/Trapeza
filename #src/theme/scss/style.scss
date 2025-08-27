@@ -21,7 +21,6 @@
 @import "global";
 @import "_branches";
 @import "./pages/home";
-@import "./pages/about";
 @import "./pages/post";
 @import "./pages/_service";
 @import "./pages/_service_detail";
@@ -30,6 +29,8 @@
 @import "./catalog/category-details";
 @import "./pages/_blog";
 @import "./pages/_stock";
+@import "./pages/_about";
+@import "./pages/reviews/reviews";
 
 // Стили секций
 @import "./section/slider-full";

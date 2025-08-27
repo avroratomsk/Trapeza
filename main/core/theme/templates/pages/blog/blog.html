@@ -1,62 +1,78 @@
-{% extends 'base.html' %}
-{% load static %}
-{% load carts_tag %}
-{% load thumbnail %}
-{% block title %}{{ setup_blog.meta_title }}{% endblock %}
-{% block description %}{{ setup_blog.meta_description }}{% endblock %}
-{% block keywords %}{{ setup_blog.meta_keywords }}{% endblock %}
+{% extends 'base.html' %} {% load static %}
+{% block title %}{{ settings.meta_title }}{% endblock %}
+{% block description %}{{ settings.meta_description }}{% endblock %}
+{% block keywords %}{{ settings.meta_keywords }}{% endblock %}
+{% load shop_tags %} {% load thumbnail %} {% block content %}
 
-{% block content %}
 <main class="page">
-  <section class="news">
+  <div class="single-banner" data-speed="70">
+    {% if settings.image %}
+    {% thumbnail settings.image "1920x830" format="WEBP" crop="center" as im %}
+    <img src="{{ im.url }}"
+         alt="{{ about_page.title }}"
+         title="{{ about_page.title }}"
+         class="single-banner__image _bgImage"
+    >
+    {% endthumbnail %}
+    {% endif %}
+
     <div class="container">
-      <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
-        <a href="/" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
-           class="breadcrumbs__item">
-          Главная
-          <meta itemprop="position" content="1"/>
-        </a>
-        <span itemprop="itemListElement" itemscope=""
-              itemtype="http://schema.org/ListItem" class="breadcrumbs__item">
-          Новости
-          <meta itemprop="position" content="2"/>
-        </span>
-      </div>
-      <h1 class="ews__title title-h2">
-        {% if setup_blog.meta_h1 %}{{ setup_blog.meta_h1 }}{% else %}Новости{% endif %}
-      </h1>
-      <div class="news__inner">
-        {% if categorys %}
-        <div class="category__filter filter">
-          <div class="filter__inner">
-            <div class="filter__item _active">
-              <a href="{% url 'blog' %}" class="filter__btn">
-                <span>Все категории</span>
-              </a>
-            </div>
-            {% for category in categorys %}
-            <div class="filter__item">
-              <a href="{{ category.get_absolute_url }}" class="filter__btn">
-                <span>{{ category.name }}</span>
-              </a>
-            </div>
-            {% endfor %}
-          </div>
+      <div class="single-banner__inner">
+        <h1 class="stock__title _title">{% if settings.meta_h1 %}{{ settings.meta_h1 }}{% else %} О нас {% endif %}</h1>
+        <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
+          <a href="/" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+             class="breadcrumbs__item">
+            Главная
+            <meta itemprop="position" content="1"/>
+          </a>
+          <span itemprop="name" class="breadcrumbs__item">
+            Блог
+            <meta itemprop="position" content="2"/>
+          </span>
         </div>
-        {% endif %}
-        {% if posts %}
-        <div class="news__grid">
-          {% for post in posts %}
-          {% include "../../components/blog-card.html" with post=post %}
-          {% endfor %}
-        </div>
-        {% else %}
-        <div class="empty-block">
-          <p>Тут пока пусто</p>
-        </div>
-        {% endif %}
       </div>
     </div>
+  </div>
+
+  <section class="blog">
+    <div class="container">
+      {% if articles %}
+      <div class="blog__grid">
+        {% for article in articles %}
+        <div class="blog__item article">
+          <div class="article__inner">
+            <a href="{{ article.get_absolute_url }}" class="article__image">
+              {% if article.image %} {% thumbnail article.image "393x300" format="WEBP" as im %}
+              <img src="{{ im.url }}" alt="{{ article.name }}" title="{{ article.name }}" />
+              {% endthumbnail %} {% else %}
+              <img src="{% static 'theme/img/no-image.jpg' %}" alt="{{ article.name }}"
+                title="{{ article.name }}" />
+              {% endif %}
+            </a>
+            <div class="article__content">
+              <a href="{{ article.get_absolute_url }}" class="article__name">{{ article.name }}</a>
+              <p class="article__text">{{ article.text|safe|striptags|truncatechars:180 }}</p>
+            </div>
+          </div>
+          <div class="article__bottom">
+            <div class="article__icon">
+              <i class="fa-regular fa-calendar-days"></i>
+              <span>{{ article.date_creation }}</span>
+            </div>
+            <a href="{{ article.get_absolute_url }}" class="article__link">Читать</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="empty-info">
+        <p>В данный момент страница дорабатывается</p>
+      </div>
+      {% endif %}
+    </div>
+    {% comment %} <p>{{ blog_setings.text }}</p> {% endcomment %}
   </section>
+
+  {% include "../../includes/_contact.html" %}
 </main>
 {% endblock %}

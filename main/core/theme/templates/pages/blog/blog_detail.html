@@ -1,47 +1,63 @@
-{% extends 'base.html' %}
-{% load static %}
-{% load carts_tag %}
-{% load thumbnail %}
-{% block title %}{{ post.meta_title }}{% endblock %}
-{% block description %}{{ post.meta_description }}{% endblock %}
-{% block keywords %}{{ post.meta_keywords }}{% endblock %}
+{% extends 'base.html' %} {% load static %}
+{% block title %}{{ article.meta_title }}{% endblock %}
+{% block description %}{{ article.meta_description }}{% endblock %}
+{% block keywords %}{{ article.meta_keywords }}{% endblock %}
+{% load shop_tags %} {% load thumbnail %} {% block content %}
 
-{% block content %}
 <main class="page">
-  <section class="banner post-banner" style="background-image: url({% static 'theme/img/slider-3.jpeg' %});">
+  <div class="single-banner" data-speed="70">
+    {% if article.image %}
+    {% thumbnail article.image "1920x830" format="WEBP" crop="center" as im %}
+    <img src="{{ im.url }}"
+         alt="{{ article.title }}"
+         title="{{ article.title }}"
+         class="single-banner__image _bgImage"
+    >
+    {% endthumbnail %}
+    {% endif %}
+
     <div class="container">
-      <div class="banner__inner">
+      <div class="single-banner__inner">
+        <h1 class="stock__title _title">{% if article.meta_h1 %}{{ article.meta_h1 }}{% else %} {{ article.name }}{% endif %}</h1>
         <div class="breadcrumbs" itemscope="" itemtype="http://schema.org/BreadcrumbList">
-          <a href="{% url 'home' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
+          <a href="/" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
              class="breadcrumbs__item">
             Главная
             <meta itemprop="position" content="1"/>
           </a>
           <a href="{% url 'blog' %}" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem"
              class="breadcrumbs__item">
-            Новости
+              Статьи
             <meta itemprop="position" content="2"/>
           </a>
-          <a href="{{ post.category.get_absolute_url }}" itemprop="itemListElement" itemscope=""
-             itemtype="http://schema.org/ListItem"
-             class="breadcrumbs__item">
-            {{ post.category.name }}
+          <span itemprop="name" class="breadcrumbs__item">
+            {{ article.name }}
             <meta itemprop="position" content="3"/>
-          </a>
-          <span itemprop="itemListElement" itemscope=""
-                itemtype="http://schema.org/ListItem" class="breadcrumbs__item">
-          {{ post.name }}
-          <meta itemprop="position" content="4"/>
-        </span>
+          </span>
         </div>
-        <h1 class="banner__title title-h2">{% if post.meta_h1 %}{{ post.meta_h1 }}{% else %} {{ post.name }}{% endif %}</h1>
+      </div>
+    </div>
+  </div>
+
+  <section class="about">
+    <div class="container">
+      <div class="about__inner">
+        {% if articles %}
+        <div class="link-bar">
+          {% for article in articles %}
+          <a href="{{ article.get_absolute_url }}" class="link-bar__link">{{ article.name }}</a>
+          {% endfor %}
+        </div>
+        {% endif %}
+        <div class="about__content">
+          <div class="text">
+            {{ article.text|safe }}
+          </div>
+        </div>
       </div>
     </div>
   </section>
-  <div class="post-text page-text section--padded">
-    <div class="container">
-      {{ post.description|safe }}
-    </div>
-  </div>
+
+  {% include "../../includes/_contact.html" %}
 </main>
 {% endblock %}

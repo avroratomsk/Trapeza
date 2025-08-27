@@ -1,20 +1,22 @@
-{% extends 'admin_base.html' %}{% load static %} {% block body %}
+{% extends 'admin_base.html' %}{% load static %} {% load thumbnail %} {% block body %}
+
 <div class="page">
   <div class="page__inner">
-    <form action="." method="POST" class="form" enctype="multipart/form-data">
-      <div class="page__head">
-        <h1 class="page__title">Настройки страницы блога</h1>
-        <button type="submit" class="form__btn">
-          <img src="{% static 'admin/img/save.svg' %}" alt=""/>
-          Сохранить
-        </button>
+    <h1 class="page__title">Настройки статей</h1>
+    <div class="page__head">
+      <div class="page__head-tab">
+        <button type="button" data-name="settings" class="page__head-btn _active">Настройки страницы</button>
+        <button type="button" data-name="list" class="page__head-btn">Список статей</button>
       </div>
-      {% csrf_token %}
-      {{ form.media }}
-      <div class="page-content _show" id="seo">
-        <!-- SEO страницы -->
+      <a href="{% url 'article_add' %}" class="action-button">Создать</a>
+    </div>
+
+    <div class="page__form tab-content _show" id="settings">
+      <form action="." method="POST" class="form _show" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.media }}
         <div class="page-content__row">
-          <div class="page-content__onecol">
+          <div class="page-content__col">
             <div class="form__group">
               <label for="{{ form.meta_h1.id_for_label }}" class="form__controls-label"> Заголовок h1 : </label>
               {{ form.meta_h1 }} {{ form.meta_h1.errors }}
@@ -31,19 +33,47 @@
               {{ form.meta_description }} {{ form.meta_description.errors }}
             </div>
             <div class="form__group">
-              <label for="{{ form.meta_description.id_for_label }}" class="form__controls-label"> Мета keywords :
-              </label>
+              <label for="{{ form.meta_description.id_for_label }}" class="form__controls-label">Мета keywords :</label>
               {{ form.meta_keywords }} {{ form.meta_keywords.errors }}
             </div>
             <div class="form__group">
-              <label for="{{ form.text.id_for_label }}" class="form__controls-label"> Текст на странице :
-              </label>
+              <label for="{{ form.text.id_for_label }}" class="form__controls-label">Текст на странице:</label>
               {{ form.text }} {{ form.text.errors }}
+            </div>
+            <button type="submit" class="form__btn">
+              <img src="{% static 'admin/img/save.svg' %}" alt=""/>
+              Сохранить
+            </button>
+          </div>
+          <div class="page-content__col">
+            <div class="form__group form__group-image">
+              <label for="{{ form.image.id_for_label }}" class="form__controls-label">Выбор изображения товара :</label>
+              {{ form.image }} {{ form.image.errors }}{{ image_path }}
             </div>
           </div>
         </div>
+      </form>
+    </div>
+
+    <div class="page__list tab-content" id="list">
+      <div class="grid-items">
+        {% for item in items %}
+        <div class="grid-item">
+          <div class="grid-item__image">
+            {% if item.image %} {% thumbnail item.image "250x250" format="WEBP" crop="center" as im %}
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"/>
+            {% endthumbnail %} {% else%}
+            <img src="{% static 'admin/img/no-image.png' %}" alt=""/>
+            {% endif %}
+          </div>
+          <div class="grid-item__content">
+            <a href="{% url 'article_edit' item.pk %}" class="grid-item__title">{{ item.name }}</a>
+            {% include 'common/_edit-block.html' with edit_url='article_edit' delete_url='article_delete' %}
+          </div>
+        </div>
+        {% endfor %}
       </div>
-    </form>
+    </div>
   </div>
 </div>
 

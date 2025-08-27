@@ -38,8 +38,11 @@
                 {% if services %}
                 <ul class="submenu">
                   {% for service in services %}
-                  <li class="submenu__item"><a href="{{ service.get_absolute_url }}" class="submenu__link"> {{
-                    service.name }}</a></li>
+                  <li class="submenu__item">
+                    <a href="{{ service.get_absolute_url }}" class="submenu__link">
+                      {{ service.name }}
+                    </a>
+                  </li>
                   {% endfor %}
                 </ul>
                 {% endif %}

@@ -377,9 +377,9 @@ def admin_contact(request):
 
 def admin_about_page(request):
   try:
-    settings = About.objects.get()
+    settings = AboutTemplate.objects.get()
   except:
-    settings = About()
+    settings = AboutTemplate()
     settings.save()
 
   if request.method == "POST":
@@ -392,7 +392,7 @@ def admin_about_page(request):
     else:
       return render(request, "template-page/about_page.html", {"form": form_new})
 
-  settings = About.objects.get()
+  settings = AboutTemplate.objects.get()
 
   form = AboutTemplateForm(instance=settings)
   context = {
@@ -460,8 +460,11 @@ def blog_settings(request):
   try:
     setup = BlogSettings.objects.get()
     form = BlogSettingsForm(instance=setup)
+    posts = Post.objects.all()
   except:
+    setup = BlogSettings()
     form = BlogSettingsForm()
+    posts = Post()
     
   if request.method == "POST":
     try:
@@ -479,6 +482,7 @@ def blog_settings(request):
   
   context = {
     "form": form,
+    "items": posts
   }  
   return render(request, "blog/settings.html", context)
 
@@ -703,6 +707,7 @@ def stock_edit(request, pk):
   if request.method == "POST":
     form_new = StockForm(request.POST, request.FILES, instance=stock)
     if form_new.is_valid():
+      form_new.save()
       url = reverse("stock_settings") + "?tab=list"
       return redirect(url)
     else:
@@ -1089,55 +1094,47 @@ def gallery_category_delete(request):
   pass
 
 
-
-def article(request):
-  items = Post.objects.all()
-  
-  context ={
-    "items": items,
-  }
-  return render(request, "blog/blog_post/blog_post.html", context)
-
 def article_add(request):
   form = PostForm()
   if request.method == "POST":
     form_new = PostForm(request.POST, request.FILES)
     if form_new.is_valid():
       form_new.save()
-      return redirect("article")
+      url = reverse("blog_settings") + "?tab=list"
+      return redirect(url)
     else:
-      return render(request, "blog/blog_post/post_add.html", {"form": form_new})
+      return render(request, "blog/post_add.html", {"form": form_new})
     
   context = {
     "form": form
   }
   
-  return render(request, "blog/blog_post/post_add.html", context)
+  return render(request, "blog/post_add.html", context)
 
 def article_edit(request, pk):
   item = Post.objects.get(id=pk)
-  form = PostForm(request.POST, request.FILES, instance=item)
-  
+
   if request.method == "POST":
-    
+    form = PostForm(request.POST, request.FILES, instance=item)
     if form.is_valid():
       form.save()
-      return redirect("article")
+      url = reverse("blog_settings") + "?tab=list"
+      return redirect(url)
     else:
-      return render(request, "blog/blog_post/post_edit.html", {"form": form, 'image_path': image_path})
-  
+      return render(request, "blog/post_edit.html")
+
   context = {
     "form": PostForm(instance=item),
     "item": item
   }
 
-  return render(request, "blog/blog_post/post_edit.html", context)
+  return render(request, "blog/post_edit.html", context)
 
 def article_delete(request, pk):
   category = Post.objects.get(id=pk)
   category.delete()
-  
-  return redirect(request.META.get("HTTP_REFERER"))
+  url = reverse("blog_settings") + "?tab=list"
+  return redirect(url)
 
 def category_blog_settings(request):
     return render(request, "blog/blog_category/blog_category.html", context)
@@ -1393,3 +1390,131 @@ def fillial_delete(request, pk):
 #    item.delete()
 #
 #    return redirect('admin_fillial')
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_vacancy(request):
+  """Настройки Вакансий"""
+  try:
+    vacancy_setup = VacancySettings.objects.get()
+    form = VacancySettingsForm(instance=vacancy_setup)
+  except:
+    form = VacancySettingsForm()
+
+  if request.method == "POST":
+    vacancy_setup = VacancySettings.objects.get()
+    form_new = VacancySettingsForm(request.POST, request.FILES, instance=vacancy_setup)
+
+    if form_new.is_valid:
+      form_new.save()
+
+      return redirect('admin_shop')
+    else:
+      return render(request, "vacancy/vacancy_settings.html", {"form": form})
+
+  context = {
+    "form": form,
+  }
+  return render(request, "vacancy/vacancy_settings.html", context)
+
+
+@user_passes_test(lambda u: u.is_superuser)
+def vacancys(request):
+  vacancys = Vacancy.objects.all().order_by('id')
+  context = {
+    "products": vacancys,
+  }
+  return render(request, "vacancy/vacancy.html", context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def vacancy_edit(request, pk):
+  """
+    View, которая получает данные из формы редактирования товара
+    и изменяет данные внесенные данные товара в базе данных
+  """
+  vacancy = Vacancy.objects.get(id=pk)
+  form = VacancyForm(instance=vacancy)
+
+  form_new = VacancyForm(request.POST, request.FILES, instance=vacancy)
+  if request.method == 'POST':
+    if form_new.is_valid():
+      form_new.save()
+      return redirect('vacancys')
+    else:
+      return render(request, 'vacancy/vacancy_edit.html', {'form': form_new})
+  context = {
+    "form":form
+  }
+  return render(request, "vacancy/vacancy_edit.html", context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def vacancy_add(request):
+  form = VacancyForm()
+
+  if request.method == "POST":
+    form_new = VacancyForm(request.POST, request.FILES)
+    if form_new.is_valid():
+      form_new.save()
+      return redirect('vacancys')
+    else:
+      return render(request, "vacancy/vacancy_add.html", {"form": form_new})
+
+  context = {
+    "form": form
+  }
+
+  return render(request, 'vacancy/vacancy_add.html', context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def vacancy_delete(request,pk):
+  vacancy = Vacancy.objects.get(id=pk)
+  vacancy.delete()
+
+  return redirect('vacancys')
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_reviews(request):
+  reviews = Reviews.objects.all().order_by('id')
+
+  context = {
+    "reviews": reviews
+  }
+
+  return render(request, "reviews/reviews.html", context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_reviews_edit(request, pk):
+  review = Reviews.objects.get(id=pk)
+  form = ReviewsForm(instance=review)
+
+  if request.method == "POST":
+    form_new = ReviewsForm(request.POST, request.FILES, instance=review)
+    if form_new.is_valid():
+      form_new.save()
+      return redirect("admin_reviews")
+    else:
+      return render(request, "reviews/reviews_edit.html", {"form": form_new})
+
+  context = {
+    "review":review,
+    "form": form
+  }
+
+  return render(request, "reviews/reviews_edit.html", context)
+
+@user_passes_test(lambda u: u.is_superuser)
+def admin_reviews_add(request):
+  form = ReviewsForm()
+  if request.method == "POST":
+    form_new = ReviewsForm(request.POST, request.FILES)
+    if form_new.is_valid():
+      form_new.save()
+      return redirect("admin_reviews")
+    else:
+      return render(request, "reviews/reviews_add.html", {"form": form_new})
+
+  context = {
+    "form": form
+  }
+
+  return render(request, "reviews/reviews_add.html", context)

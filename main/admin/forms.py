@@ -5,6 +5,7 @@ from subdomain.models import *
 from service.models import *
 from news.models import *
 from shop.models import *
+from reviews.models import *
 from .widgets import CustomImageWidget
 from django_ckeditor_5.widgets import CKEditor5Widget
 
@@ -89,7 +90,6 @@ class BlogSettingsForm(forms.ModelForm):
       model = BlogSettings
       fields = "__all__"
       widgets = {
-
           'meta_h1': forms.TextInput(attrs={
               'class': INPUT_CLASS
           }),
@@ -151,7 +151,7 @@ class PostForm(forms.ModelForm):
             "meta_keywords": forms.TextInput(attrs={
               "class":INPUT_CLASS,
             }),
-            'description': CKEditor5Widget(
+            'text': CKEditor5Widget(
                 attrs={'class': 'django_ckeditor_5'},
                 config_name='extends'
             )
@@ -466,14 +466,10 @@ class AboutTemplateForm(forms.ModelForm):
       'meta_keywords': forms.TextInput(attrs={
           'class': INPUT_CLASS,
       }),
-      'description': CKEditor5Widget(
+      'about_text': CKEditor5Widget(
          attrs={'class': 'django_ckeditor_5'},
          config_name='extends'
      ),
-     'description_two': CKEditor5Widget(
-        attrs={'class': 'django_ckeditor_5'},
-        config_name='extends'
-     )
   }
            
 class StockPage(forms.ModelForm):
@@ -519,10 +515,6 @@ class StockForm(forms.ModelForm):
       'validity': forms.DateInput(attrs={
         'class':INPUT_CLASS,
       }),
-      'description': CKEditor5Widget(
-        attrs={'class': 'django_ckeditor_5'},
-        config_name='extends'
-      ),
       'status': forms.CheckboxInput(attrs={
         'class': 'form__controls-checkbox',
       }),
@@ -914,5 +906,119 @@ class FillialForm(forms.ModelForm):
         "id": "slug"
       })
     }
-    
+
+
+class VacancyForm(forms.ModelForm):
+  """ Form, отвечает за создание товара и редактирование товара"""
+  # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
+
+  class Meta:
+    model = Vacancy
+    fields = [
+      'name',
+      'slug',
+      'description',
+      'meta_h1',
+      'meta_title',
+      'meta_description',
+      'meta_keywords',
+      'price',
+      'status',
+    ]
+    widgets = {
+      'name': forms.TextInput(attrs={
+        'class': 'form__controls',
+        "id":"name"
+        # 'placeholder': 'Название товара',
+      }),
+      'description': forms.Textarea(attrs={
+        'class': 'form__controls'
+      }),
+      'price': forms.NumberInput(attrs={
+         'class': 'form__controls',
+      }),
+      'slug': forms.NumberInput(attrs={
+         'class': 'form__controls',
+      }),
+      'meta_h1': forms.NumberInput(attrs={
+         'class': 'form__controls',
+      }),
+      'meta_title': forms.NumberInput(attrs={
+         'class': 'form__controls',
+      }),
+      'meta_description': forms.NumberInput(attrs={
+         'class': 'form__controls',
+      }),
+      'meta_keywords': forms.NumberInput(attrs={
+         'class': 'form__controls',
+      }),
+    }
+
+
+class VacancySettingsForm(forms.ModelForm):
+  """ Form, отвечает за создание товара и редактирование товара"""
+  # description = forms.CharField(label='Описание производителя', required=False, widget=CKEditorUploadingWidget)
+  # description = forms.CharField(widget=TinyMCE())
+  class Meta:
+    model = ShopSettings
+    fields = "__all__"
+    widgets = {
+      'meta_h1': forms.TextInput(attrs={
+        'class': 'form__controls',
+      }),
+      'meta_title': forms.TextInput(attrs={
+        'class': 'form__controls',
+      }),
+      'meta_description': forms.Textarea(attrs={
+        'class': 'form__controls',
+        "id": "meta_description"
+      }),
+      'meta_keywords': forms.TextInput(attrs={
+        'class': 'form__controls',
+      }),
+    }
+
+
+class ReviewsForm(forms.ModelForm):
+  """ Form, добавление и редактирование отзыва"""
+  # description = forms.CharField(label='Полное описание товара', required=False, widget=CKEditorUploadingWidget())
+
+  class Meta:
+    model = Reviews
+    fields = "__all__"
+
+    widgets = {
+      'name': forms.TextInput(attrs={
+        'class': 'form__controls',
+        'id': 'name'
+      }),
+      'slug': forms.TextInput(attrs={
+        'class':'form__controls',
+        "id": "slug"
+      }),
+      'date': forms.DateInput(attrs={
+        'class':'form__controls',
+      }),
+      'text': forms.Textarea(attrs={
+        'class': 'form__controls',
+        'rows': 5,
+      }),
+      'status': forms.CheckboxInput(attrs={
+        'class': 'form__controls-checkbox',
+      }),
+      'meta_h1': forms.TextInput(attrs={
+        'class': 'form__controls',
+      }),
+      'meta_title': forms.TextInput(attrs={
+        'class': 'form__controls',
+      }),
+      'meta_description': forms.Textarea(attrs={
+        'class': 'form__controls',
+        'rows': 5,
+      }),
+      'meta_keywords': forms.TextInput(attrs={
+        'class': 'form__controls'
+      })
+    }
+
     

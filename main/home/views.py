@@ -59,16 +59,18 @@ def index(request):
 
 def about(request):
   try:
-    about_page = About.objects.get()
+      about_page = AboutTemplate.objects.get()
   except:
-    about_page = About()
-
+      about_page = AboutTemplate()
 
   context = {
-    "about_page": about_page
+      "about_page": about_page,
   }
 
   return render(request, "pages/about.html", context)
+
+def contact(request):
+    return render(request, "pages/contact.html")
 
 
 def contact(request):
@@ -84,51 +86,6 @@ def contact(request):
 
   return render(request, "pages/contact.html", context)
 
-
-def production(request):
-  try:
-    settings = Production.objects.get()
-  except:
-    settings = Production()
-
-  context = {
-    "settings": settings,
-  }
-
-  return render(request, "pages/production.html", context)
-
-def works(request):
-    try:
-      work_page = GalleryCategory.objects.get()
-    except:
-      work_page = GalleryCategory()
-
-    works = Gallery.objects.filter(is_active=True)
-    works_list = Works.objects.filter(is_active=True)
-    context = {
-      "work_page": work_page,
-      "works": works,
-      "works_list":works_list
-    }
-
-    return render(request, "pages/works.html", context)
-
-def delivery(request):
-  try:
-    delivery_page = Delivery.objects.get()
-  except:
-    delivery_page = Delivery()
-
-  context = {
-    "delivery_page": delivery_page,
-  }
-  return render(request, "pages/delivery.html", context)
-
-def politika(request):
-  return render(request, "pages/politika.html")
-
-def cookie(request):
-  return render(request, "pages/cookie.html")
 
 def robots_txt(request):
   try:
@@ -322,3 +279,9 @@ def reviewsform(request):
   }
 
   return render(request, 'pages/callback-succes.html', context)
+
+def policy(request):
+  return render(request, "pages/policy.html")
+
+def cookie(request):
+  return render(request, "pages/cookies.html")

@@ -114,22 +114,14 @@
         </div>
       </div>
 
-      <div class="menu-sidebar__dropdown" id="attr">
-        <div class="menu-sidebar__dropdown-title">
-          <div class="menu-sidebar__dropdow-inner">
-            <i class="fas fa-rss-square"></i>
-            <span>Настрйоки блога</span>
-          </div>
-          <i class="fas fa-chevron-down"></i>
-        </div>
-        <div class="menu-sidebar__dropdown-content">
-          <ul>
-            <li><a href="{% url 'blog_settings' %}">Настройки блога</a></li>
-            <li><a href="{% url 'category_blog' %}">Категории блога</a></li>
-            <li><a href="{% url 'article' %}">Статьи блога</a></li>
-          </ul>
-        </div>
-      </div>
+      <a href="{% url 'blog_settings' %}" class="menu-sidebar__link-general">
+        <i class="fas fa-rss-square"></i>
+        <span>Статьи</span>
+      </a>
+      <a href="{% url 'admin_vacancy' %}" class="menu-sidebar__link-general">
+        <i class="fa-solid fa-hammer"></i>
+        <span>Вакансии</span>
+      </a>
       <a href="{% url 'admin_service_page' %}" class="menu-sidebar__link-general">
         <i class="fas fa-cogs"></i>
         <span>Услуги</span>
